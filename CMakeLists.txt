@@ -25,7 +25,10 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(SFML)
 
 #### Practical 1 ####
-add_executable(game main.cpp)
+add_executable(game main.cpp
+        header/movement.h
+        cpps/Movement.cpp
+)
 target_link_libraries(game
     PRIVATE
         sfml-graphics
