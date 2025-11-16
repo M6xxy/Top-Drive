@@ -1,16 +1,22 @@
 #include <SFML/Graphics.hpp>
 #include <../../../../header/movement.h>
 
-#include "header/loadSprites.h"
+#include "header/LoadSprites.h"
 
 int main() {
   //DECLERATIONS N STUFF
   LoadSprites spriteLoader;
+
   //DELTA CLOCK
   sf:
     sf::Clock dt_clock;
 
+  //Create Window
   sf::RenderWindow window(sf::VideoMode({800, 800}), "SFML works!");
+
+  //Limit FPS
+  window.setFramerateLimit(60);
+
   //Circle Object
   sf::CircleShape shape(100.f);
   shape.setFillColor(sf::Color::Green);
