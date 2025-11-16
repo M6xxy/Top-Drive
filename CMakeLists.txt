@@ -21,12 +21,21 @@ FetchContent_Declare(
         GIT_TAG 2.6.1
 )
 
+#### Fetch box2d ####
+FetchContent_Declare(
+        box2d
+        GIT_REPOSITORY https://github.com/erincatto/box2d.git
+        GIT_TAG v2.4.1
+)
+
+# Download + add box2d to project
+FetchContent_MakeAvailable(box2d)
+
 # Download + add the SFML project
 FetchContent_MakeAvailable(SFML)
 
 #### Practical 1 ####
 add_executable(game main.cpp
-        header/movement.h
         cpps/Movement.cpp
 )
 target_link_libraries(game
@@ -34,4 +43,5 @@ target_link_libraries(game
         sfml-graphics
         sfml-window
         sfml-system
+        box2d
 )
