@@ -1,8 +1,11 @@
 #include <SFML/Graphics.hpp>
 #include <../../../../header/movement.h>
 
+#include "header/loadSprites.h"
+
 int main() {
   //DECLERATIONS N STUFF
+  LoadSprites spriteLoader;
   //DELTA CLOCK
   sf:
     sf::Clock dt_clock;
@@ -12,8 +15,13 @@ int main() {
   sf::CircleShape shape(100.f);
   shape.setFillColor(sf::Color::Green);
 
+  //Sprite
+  sf::Sprite playerSprite;
+  sf::Texture player_texture;
+  spriteLoader.Load(playerSprite,player_texture,"../../assets/textures/placeholder-car.png");
+
   //Movement Setup
-  Movement movement(shape,50.f);
+  Movement movement(playerSprite,50.f);
 
 
   //GAME LOOP
@@ -34,6 +42,7 @@ int main() {
     // 4. Render
     window.clear();
     window.draw(shape);
+    spriteLoader.Draw(window,playerSprite);
     window.display();
   }
 }

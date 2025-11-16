@@ -6,7 +6,7 @@
 
 
 // Constructor
-Movement::Movement(sf::CircleShape &shape, float speed) :
+Movement::Movement(sf::Sprite &shape, float speed) :
     m_shape(shape), // Initialises Shape
     m_speed(speed) // Initialise speed
 {}
