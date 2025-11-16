@@ -4,9 +4,9 @@
 
 class Movement {
 public:
-    Movement(sf::CircleShape& shape, float speed);
+    Movement(sf::Sprite& shape, float speed);
     void update(float dt);
 private:
-    sf::CircleShape& m_shape;
+    sf::Sprite& m_shape;
     float m_speed;
 };
