@@ -1,5 +1,6 @@
 //
 // Created by M6XXY on 16/11/2025.
+// The purpose of this class is to control the movement of player sprites
 //
 
 #include "../header/movement.h"
