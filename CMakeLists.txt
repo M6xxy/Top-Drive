@@ -39,6 +39,12 @@ add_executable(game main.cpp
         cpps/Movement.cpp
         cpps/loadSprites.cpp
         header/loadSprites.h
+        cpps/MapEditor.cpp
+        header/MapEditor.h
+        cpps/Tile.cpp
+        header/Tile.h
+        cpps/Map.cpp
+        header/Map.h
 )
 target_link_libraries(game
     PRIVATE

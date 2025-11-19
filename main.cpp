@@ -2,6 +2,8 @@
 #include <../../../../header/movement.h>
 
 #include "header/LoadSprites.h"
+#include "header/Map.h"
+#include "header/MapEditor.h"
 
 int main() {
   //DECLERATIONS N STUFF
@@ -29,6 +31,15 @@ int main() {
   //Movement Setup
   Movement movement(playerSprite,50.f);
 
+  //Load Map Editor
+  MapEditor mapEditor;
+  //Create Map
+  Map testMap;
+  testMap.setTile(1,0,0);
+  testMap.setTile(1,1,0);
+  testMap.setTile(0,2,0);
+  testMap.setTile(1,3,0);
+
 
   //GAME LOOP
   while (window.isOpen()) {
@@ -47,8 +58,13 @@ int main() {
 
     // 4. Render
     window.clear();
+
     window.draw(shape);
     spriteLoader.Draw(window,playerSprite);
+
+    //Map
+    testMap.render(mapEditor.tileLibrary,window);
+
     window.display();
   }
 }
