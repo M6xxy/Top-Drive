@@ -1,15 +1,14 @@
 #include <SFML/Graphics.hpp>
 #include <../../../../header/movement.h>
-
+#include <box2d/box2d.h>
 #include "header/LoadSprites.h"
+#include "header/PhysicsWorld.h"
+#include "header/Player.h"
 
 int main() {
-  //DECLERATIONS N STUFF
-  LoadSprites spriteLoader;
 
   //DELTA CLOCK
-  sf:
-    sf::Clock dt_clock;
+  sf::Clock dt_clock;
 
   //Create Window
   sf::RenderWindow window(sf::VideoMode({800, 800}), "SFML works!");
@@ -21,14 +20,38 @@ int main() {
   sf::CircleShape shape(100.f);
   shape.setFillColor(sf::Color::Green);
 
-  //Sprite
-  sf::Sprite playerSprite;
-  sf::Texture player_texture;
-  spriteLoader.Load(playerSprite,player_texture,"../../assets/textures/placeholder-car.png");
+  // Create Physics World
+  LoadSprites spriteLoader;
+  PhysicsWorld physics({0.f, 9.8f}, 30.f);
+  Movement movement;
 
-  //Movement Setup
-  Movement movement(playerSprite,50.f);
 
+  // Cars Ground Body
+  {
+    b2BodyDef groundDef;
+    groundDef.position.Set(physics.toMeters(400.f), physics.toMeters(750.f));
+    b2Body* ground = physics.world().CreateBody(&groundDef);
+
+    b2PolygonShape groundBox;
+    groundBox.SetAsBox(physics.toMeters(400.f), physics.toMeters(20.f));
+    ground->CreateFixture(&groundBox, 0.0f);
+  }
+
+  // Car Visual Body
+  sf::RectangleShape groundShape;
+  groundShape.setSize({800.f, 40.f});
+  groundShape.setOrigin(400.f, 20.f);
+  groundShape.setPosition(400.f, 750.f);
+  groundShape.setFillColor(sf::Color::Green);
+
+  // Player
+  Player player(
+    physics,
+    spriteLoader,
+    "../../assets/textures/placeholder-car.png",
+    {400.f, 200.f},
+    5.0f // Speed in m/s
+  );
 
   //GAME LOOP
   while (window.isOpen()) {
@@ -42,13 +65,20 @@ int main() {
     // 2. Delta time
     float dt = dt_clock.restart().asSeconds();
 
-    // 3. Update movement
-    movement.update(dt);
+    // 3. Movement Intent
+    MovementIntent intent = movement.captureInput();
+
+    // Intent VS physics
+    player.updatePhysics(intent);
+    physics.step(dt);
+
+    // Physics visuals
+    player.syncSpriteFromPhysics();
 
     // 4. Render
     window.clear();
     window.draw(shape);
-    spriteLoader.Draw(window,playerSprite);
+    window.draw(player.getSprite());
     window.display();
   }
 }
