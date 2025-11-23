@@ -48,7 +48,7 @@ int main() {
 
   // Car Visual Body
   sf::RectangleShape groundShape;
-  groundShape.setSize({800.f, 40.f});
+  groundShape.setSize({100.f, 40.f});
   groundShape.setOrigin(400.f, 20.f);
   groundShape.setPosition(400.f, 750.f);
   groundShape.setFillColor(sf::Color::Green);
@@ -58,20 +58,38 @@ int main() {
     physics,
     spriteLoader,
     "../../assets/textures/placeholder-car.png",
-    {400.f, 200.f},
+    {75, 75},
     5.0f // Speed in m/s
   );
+
   //Load Map Editor
   MapEditor mapEditor;
   b2Vec2 gravity(0.0f, 0.0f);
   b2World world(gravity);
 
   //Create Map
+  int track[12][12] = {
+    {0,0,0,0,0,0,0,0,0,0,0,0},
+    {0,1,1,1,1,1,1,1,0,0,0,0},
+    {0,1,0,0,0,0,0,1,1,1,0,0},
+    {0,1,1,1,1,1,0,0,0,1,0,0},
+    {0,0,0,0,0,1,0,0,0,1,0,0},
+    {0,1,1,1,0,1,0,0,0,1,0,0},
+    {0,1,0,1,0,1,0,0,0,1,0,0},
+    {0,1,0,1,1,1,0,0,0,1,1,0},
+    {0,1,0,0,0,0,0,0,0,0,1,0},
+    {0,1,1,1,0,1,1,1,1,0,1,0},
+    {0,0,0,1,1,1,0,0,1,1,1,0},
+    {0,0,0,0,0,0,0,0,0,0,0,0}
+  };
+
   Map testMap;
-  testMap.setTile(1,0,0);
-  testMap.setTile(1,1,0);
-  testMap.setTile(0,2,0);
-  testMap.setTile(1,3,0);
+  // Set tiles in testMap
+  for(int y = 0; y < 12; y++) {
+    for(int x = 0; x < 12; x++) {
+      testMap.setTile(track[y][x], x, y);
+    }
+  }
 
   //Create Collsion
   CollisionCreator collisionCreator;
@@ -123,12 +141,9 @@ int main() {
 
       //Player Sprite
       window.draw(player.getSprite());
+
+      player.drawDebug(window);
     }
-
-
-
-
-    //spriteLoader.Draw(window,playerSprite);
 
 
     //Display

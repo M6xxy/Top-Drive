@@ -30,6 +30,8 @@ public:
     //Expose Body for customization
     b2Body* getBody();
 
+    void drawDebug(sf::RenderWindow &window);
+
 private:
     PhysicsWorld& m_physics;
     sf::Texture m_texture;

@@ -33,12 +33,12 @@ private:
     void loadCollisionLibrary() {
         //Tile 1
         CollisonBound track;
-        track.tileId = 1;
+        track.tileId = 0;
         //Shape 1
-        track.verteciesPart1[0].Set(0.0f,-1.0f);
-        track.verteciesPart1[1].Set(-1.0f,1.0f);
-        track.verteciesPart1[2].Set(-0.5f,1.0f);
-        track.verteciesPart1[3].Set(-0.5f,-1.0f);
+        track.verteciesPart1[0].Set(-1.0f, -1.0f);  // bottom-left
+        track.verteciesPart1[1].Set( 1.0f, -1.0f);  // bottom-right
+        track.verteciesPart1[2].Set( 1.0f,  1.0f);  // top-right
+        track.verteciesPart1[3].Set(-1.0f,  1.0f);  // top-left
         //Shape 2
         track.verteciesPart2[0].Set(-0.5f, 0.0f);
         track.verteciesPart2[1].Set(-0.5f, 1.0f);
