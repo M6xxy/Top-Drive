@@ -48,6 +48,8 @@ add_executable(game main.cpp
         cpps/CarComponents.cpp
         header/Car.h
         cpps/Car.cpp
+        header/PlayerCar.h
+        cpps/PlayerCar.cpp
 )
 
 #Tell compiler where headers live
