@@ -71,7 +71,7 @@ int main() {
 
   //Create Collsion
   CollisionCreator collisionCreator;
-  collisionCreator.createCollision(world,collisionCreator.tileCollisonVector,testMap);
+  collisionCreator.createCollision(physics.world(),collisionCreator.tileCollisonVector,testMap);
 
 
   //GAME LOOP
@@ -86,6 +86,8 @@ int main() {
     // 2. Delta time
     float dt = dt_clock.restart().asSeconds();
 
+
+
     // 3. Movement Intent
     MovementIntent intent = movement.captureInput();
 
@@ -93,22 +95,26 @@ int main() {
     player.updatePhysics(intent);
     physics.step(dt);
 
+
+
+
+
     // Physics visuals
     player.syncSpriteFromPhysics();
 
     // 4. Render
     window.clear();
-    window.draw(shape);
+    //Map
+    testMap.render(mapEditor.tileLibrary,window);
+    //Collision display
+    collisionCreator.render(window,collisionCreator.tileInstances);
+
+    //Player Sprite
     window.draw(player.getSprite());
 
     //window.draw(shape);
    // spriteLoader.Draw(window,playerSprite);
 
-    //Map
-    testMap.render(mapEditor.tileLibrary,window);
-
-    //Collision display
-    collisionCreator.render(window,collisionCreator.tileInstances);
 
     //Display
     window.display();
