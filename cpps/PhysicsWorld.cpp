@@ -12,27 +12,50 @@ void PhysicsWorld::step(float dt) {
     m_world.Step(dt, 8,3);
 }
 
-void PhysicsWorld::applyMovementIntent(b2Body* body, const MovementIntent& intent, float speedMetersPerSec) {
+void PhysicsWorld::applyMovementIntent(b2Body* body, const MovementIntent& intent, float maxSpeedMetersPerSec) {
 
     if (!body) return;
 
-    // Direction based on intent
-    b2Vec2 dir(intent.moveX, intent.moveY);
+    //  Standard Car Parameters
+    const float acceleration = maxSpeedMetersPerSec * 2.0f; // m/s"
+    const float turnSpeed = 2.5f; // Turn speed for full steer
+    const float lateralFriction = 10.f; // friction booster to help sidewards drift
 
-    // Normalize input
-    float lenSq = dir.x * dir.x + dir.y * dir.y;
-    if (lenSq > 0.0001f) {
-        float len = sqrtf(lenSq);
-        dir.x /= len;
-        dir.y /= len;
+    // Get current velocity and orientation
+    b2Vec2 vel = body->GetLinearVelocity();
+
+    // Forward vector
+    float angle = body->GetAngle();
+    b2Vec2 forward(std::sin(angle), -std::cos(angle));
+
+    // Simulate Tyre Friction
+    b2Vec2 right(forward.y, -forward.x);
+    float lateralSpeed = b2Dot(vel,right);
+    b2Vec2 lateralVel = lateralSpeed * right;
+
+    // Throttle / Brake
+
+    float throttle = intent.throttle;
+    if (std::fabs(throttle) > 0.01f) {
+        // Add acceleration
+        float scaler = throttle * acceleration * body->GetMass();
+        b2Vec2 force = scaler * forward;
+        body->ApplyForceToCenter(force, true);
     }
 
-    // Speed in meters / seconds
-    b2Vec2 vel = body->GetLinearVelocity();
-    vel.x += dir.x * speedMetersPerSec;
-    vel.y += dir.y * speedMetersPerSec;
+    // Cap Speed
+    vel = body->GetLinearVelocity();
+    float speed = vel.Length();
+    if (speed > maxSpeedMetersPerSec) {
+        vel *= maxSpeedMetersPerSec / speed;
+        body->SetLinearVelocity(vel);
+    }
 
-    body->SetLinearVelocity(vel);
+    // Steering
+
+    float steer = intent.steer;
+    float desiredAngularVel = steer * turnSpeed;
+    body->SetAngularVelocity(desiredAngularVel);
 
     if (intent.handbrake) {
 

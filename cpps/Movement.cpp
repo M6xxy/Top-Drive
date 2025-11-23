@@ -11,16 +11,16 @@
 MovementIntent Movement::captureInput() const {
     MovementIntent intent;
 
-    // WASD Directions
+    // Steering
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        intent.moveX -= 1.0f;
+        intent.steer -= 1.0f;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        intent.moveX += 1.0f;
+        intent.steer += 1.0f;
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        intent.moveY -= 1.0f;
+        intent.throttle -= 1.0f;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        intent.moveY += 1.0f;
+        intent.throttle += 1.0f;
 
     //Handbrake
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))

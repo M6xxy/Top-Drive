@@ -4,8 +4,8 @@
 #include <box2d/box2d.h>
 
 struct MovementIntent {
-    float moveX = 0.0f; // -1 LEFT , +1 RIGHT
-    float moveY = 0.0f; // -1 UP , +1 DOWN
+    float throttle = 0.0f; // -1 Full Reverse , +1 Full Forward
+    float steer = 0.0f; // -1 LEFT , +1 RIGHT
     bool handbrake = false;
 };
 

@@ -7,7 +7,10 @@
 #include "../header/LoadSprites.h"
 #include "../header/Movement.h"
 
-Player::Player(PhysicsWorld& physics, LoadSprites& loader, const std::string& texturePath, const sf::Vector2f& startPosPixels, float speedMetersPerSec) : m_physics(physics), m_body(nullptr), m_speed(speedMetersPerSec) {
+Player::Player(PhysicsWorld& physics, LoadSprites& loader, const std::string& texturePath,
+    const sf::Vector2f& startPosPixels, float speedMetersPerSec) : m_physics(physics),
+    m_body(nullptr), m_speed(speedMetersPerSec) {
+
     // Load sprite and texture via loader
     loader.Load(m_sprite, m_texture, texturePath);
     m_sprite.setPosition(startPosPixels);
@@ -31,9 +34,12 @@ Player::Player(PhysicsWorld& physics, LoadSprites& loader, const std::string& te
     fixtureDef.density = 1.0f;
     fixtureDef.friction = 0.3f;
     m_body->CreateFixture(&fixtureDef);
+
+    m_body->SetLinearDamping(2.0f);
+    m_body->SetAngularDamping(3.0f);
 }
 
-void Player::updatePhysics(const MovementIntent &intent) {
+void Player::updatePhysics(const MovementIntent &intent) const {
     m_physics.applyMovementIntent(m_body, intent, m_speed);
 }
 

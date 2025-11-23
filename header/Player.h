@@ -19,7 +19,7 @@ public:
     Player (PhysicsWorld& physics, LoadSprites& loader, const std::string& texturePath, const sf::Vector2f& startPosPixels, float speedMetersPerSec);
 
     // Update physics intent to player
-    void updatePhysics(const MovementIntent& intent);
+    void updatePhysics(const MovementIntent& intent) const;
 
     // Sync sprite to physics body
     void syncSpriteFromPhysics();

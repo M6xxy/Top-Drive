@@ -22,7 +22,7 @@ int main() {
 
   // Create Physics World
   LoadSprites spriteLoader;
-  PhysicsWorld physics({0.f, 9.8f}, 30.f);
+  PhysicsWorld physics({0.f, 0.f}, 30.f);
   Movement movement;
 
 
