@@ -38,6 +38,40 @@ void PlayerCar::syncSpriteFromPhysics() {
 
 }
 
+void PlayerCar::drawDebug(sf::RenderWindow& window)
+{
+    // Get body position in pixels
+    b2Vec2 posMeters = m_carPhysics->GetPosition();
+    float angle = m_body->GetAngle();
+
+    sf::RectangleShape debugShape;
+
+    // Get fixture shape
+    b2Fixture* fixture = m_body->GetFixtureList();
+    b2PolygonShape* poly = static_cast<b2PolygonShape*>(fixture->GetShape());
+
+    // Box2D gives half-width/half-height in meters
+    float halfW = poly->m_vertices[1].x; // local vertex
+    float halfH = poly->m_vertices[2].y;
+
+    debugShape.setSize({
+        m_physics.toPixels(halfW * 2.f),
+        m_physics.toPixels(halfH * 2.f)
+    });
+
+    debugShape.setOrigin(debugShape.getSize() / 2.f);
+
+    debugShape.setFillColor(sf::Color::Transparent);
+    debugShape.setOutlineThickness(2.f);
+    debugShape.setOutlineColor(sf::Color::Red);
+
+    debugShape.setPosition(m_physics.toPixels(posMeters.x),
+                           m_physics.toPixels(posMeters.y));
+    debugShape.setRotation(angle * 180.f / b2_pi);
+
+    window.draw(debugShape);
+}
+
 sf::Sprite& PlayerCar::getSprite() { return m_sprite; }
 Car& PlayerCar::getCar() { return m_carPhysics.getCar(); }
 const Car& PlayerCar::getCar() const { return m_carPhysics.getCar(); }

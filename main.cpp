@@ -5,7 +5,10 @@
 #include "header/Car.h"
 #include "header/PlayerCar.h"
 #include "header/LoadSprites.h"
+#include "cpps/Scenes/MenuScene.h"
 #include "header/PhysicsWorld.h"
+#include "header/CollisionCreator.h"
+#include "header/MapEditor.h"
 #include "header/Player.h"
 
 static CarSpec makeTestCarSpec() {
@@ -81,6 +84,9 @@ int main() {
   //DELTA CLOCK
   sf::Clock dt_clock;
 
+  //MENU STATE
+  int menuState = 0;
+
   //Create Window
   sf::RenderWindow window(sf::VideoMode({800, 800}), "SFML works!");
 
@@ -96,6 +102,9 @@ int main() {
   PhysicsWorld physics({0.f, 0.f}, 30.f);
   Movement movement;
 
+  //Menu
+  MenuScene mainMenu(window);
+
 
 CarSpec debugCarSpec = makeTestCarSpec();
 
@@ -106,6 +115,39 @@ CarSpec debugCarSpec = makeTestCarSpec();
     {400.f, 400.f},
     debugCarSpec
   );
+
+  //Load Map Editor
+  MapEditor mapEditor;
+  b2Vec2 gravity(0.0f, 0.0f);
+  b2World world(gravity);
+
+  //Create Map
+  int track[12][12] = {
+    {0,0,0,0,0,0,0,0,0,0,0,0},
+    {0,1,1,1,1,1,1,1,0,0,0,0},
+    {0,1,0,0,0,0,0,1,1,1,0,0},
+    {0,1,1,1,1,1,0,0,0,1,0,0},
+    {0,0,0,0,0,1,0,0,0,1,0,0},
+    {0,1,1,1,0,1,0,0,0,1,0,0},
+    {0,1,0,1,2,1,0,0,0,1,0,0},
+    {0,1,0,1,1,1,0,0,0,1,1,0},
+    {0,1,0,0,0,0,0,0,0,0,1,0},
+    {0,1,1,1,2,1,1,1,1,2,1,0},
+    {0,0,0,1,1,1,0,0,1,1,1,0},
+    {0,0,0,0,0,0,0,0,0,0,0,0}
+  };
+
+  Map testMap;
+  // Set tiles in testMap
+  for(int y = 0; y < 12; y++) {
+    for(int x = 0; x < 12; x++) {
+      testMap.setTile(track[y][x], x, y);
+    }
+  }
+
+  //Create Collsion
+  CollisionCreator collisionCreator;
+  collisionCreator.createCollision(physics.world(),collisionCreator.tileCollisonVector,testMap);
 
   //GAME LOOP
   while (window.isOpen()) {
@@ -119,6 +161,10 @@ CarSpec debugCarSpec = makeTestCarSpec();
     // 2. Delta time
     float dt = dt_clock.restart().asSeconds();
 
+    //Get mouse properties
+    sf::Vector2f mousePos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
+    bool mousePressed = sf::Mouse::isButtonPressed(sf::Mouse::Left);
+
     // 3. Movement Intent
     MovementIntent intent = movement.captureInput();
 
@@ -128,9 +174,25 @@ CarSpec debugCarSpec = makeTestCarSpec();
     playerCar.syncSpriteFromPhysics();
 
     // 4. Render
-    window.clear();
-    window.draw(shape);
-    window.draw(playerCar.getSprite());
+
+    //Menu
+    if (mainMenu.state == 0) {
+      mainMenu.update(mousePos,mousePressed);
+      window.clear();
+      mainMenu.draw(window);
+    } else {
+      //Map
+      testMap.render(mapEditor.tileLibrary,window);
+      //Collision display
+      collisionCreator.render(window,collisionCreator.tileInstances);
+
+      //Player Sprite
+      window.draw(playerCar.getSprite());
+
+    }
+
+
+    //Display
     window.display();
   }
 }
