@@ -13,8 +13,8 @@
 class Map {
 public:
     std::vector<std::vector<int>> mapGrid;
-    int maxHeight = 12;
-    int maxWidth = 12;
+    int maxHeight = 16;
+    int maxWidth = 16;
 
     //Constructor
     Map();
