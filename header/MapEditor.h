@@ -40,12 +40,36 @@ private:
         tileLibrary.push_back(grass);
 
         //Tile 3
-        Tile corner;
-        corner.ID = 2;
-        corner.grip = 1.0f;
-        corner.name = "Corner Top Tile";
+        Tile cornerTop;
+        cornerTop.ID = 2;
+        cornerTop.grip = 1.0f;
+        cornerTop.name = "Corner Top Tile";
 
-        tileLibrary.push_back(corner);
+        tileLibrary.push_back(cornerTop);
+
+        //Tile 3
+        Tile cornerLeft;
+        cornerLeft.ID = 3;
+        cornerLeft.grip = 1.0f;
+        cornerLeft.name = "Corner Left Tile";
+
+        tileLibrary.push_back(cornerLeft);
+
+        //Tile 3
+        Tile cornerRight;
+        cornerRight.ID = 4;
+        cornerRight.grip = 1.0f;
+        cornerRight.name = "Corner Right Tile";
+
+        tileLibrary.push_back(cornerRight);
+
+        //Tile 3
+        Tile cornerBottom;
+        cornerBottom.ID = 5;
+        cornerBottom.grip = 1.0f;
+        cornerBottom.name = "Corner Bottom Tile";
+
+        tileLibrary.push_back(cornerBottom);
     }
 };
 
