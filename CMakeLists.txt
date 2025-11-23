@@ -34,11 +34,21 @@ FetchContent_MakeAvailable(box2d)
 # Download + add the SFML project
 FetchContent_MakeAvailable(SFML)
 
+
 #### Practical 1 ####
 add_executable(game main.cpp
         cpps/Movement.cpp
         cpps/loadSprites.cpp
         header/loadSprites.h
+        header/PhysicsWorld.h
+        header/Player.h
+        cpps/Player.cpp
+        cpps/PhysicsWorld.cpp
+)
+
+#Tell compiler where headers live
+target_include_directories(game PRIVATE
+        ${CMAKE_SOURCE_DIR}/header
         cpps/MapEditor.cpp
         header/MapEditor.h
         cpps/Tile.cpp
@@ -50,6 +60,7 @@ add_executable(game main.cpp
         cpps/CollisonBound.cpp
         header/CollisonBound.h
 )
+
 target_link_libraries(game
     PRIVATE
         sfml-graphics
