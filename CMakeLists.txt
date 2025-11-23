@@ -5,40 +5,41 @@ project(build_setup)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-#Fetch Content
+# Fetch Content
 include(FetchContent)
 
-#### Setup Directories ####
-#Main output directory
-SET(OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/")
-# Ouput all DLLs from all libs into main build folder
-SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIRECTORY})
+# Setup Directories
+set(OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIRECTORY})
 
-#### Fetch SFML ####
+# Fetch SFML
 FetchContent_Declare(
         SFML
         GIT_REPOSITORY https://github.com/SFML/SFML.git
         GIT_TAG 2.6.1
 )
 
-#### Fetch box2d ####
+# Fetch Box2D
 FetchContent_Declare(
         box2d
         GIT_REPOSITORY https://github.com/erincatto/box2d.git
         GIT_TAG v2.4.1
 )
 
-# Download + add box2d to project
-FetchContent_MakeAvailable(box2d)
+FetchContent_MakeAvailable(box2d SFML)
 
-# Download + add the SFML project
-FetchContent_MakeAvailable(SFML)
-
-
-#### Practical 1 ####
-add_executable(game main.cpp
+# Add executable
+add_executable(game
+        main.cpp
         cpps/Movement.cpp
         cpps/loadSprites.cpp
+        cpps/Player.cpp
+        cpps/PhysicsWorld.cpp
+        cpps/MapEditor.cpp
+        cpps/Tile.cpp
+        cpps/Map.cpp
+        cpps/CollisionCreator.cpp
+        cpps/CollisonBound.cpp
         header/loadSprites.h
         header/PhysicsWorld.h
         header/Player.h
@@ -52,17 +53,28 @@ add_executable(game main.cpp
         cpps/PlayerCar.cpp
         cpps/CarPhysics.cpp
         header/CarPhysics.h
+        header/MapEditor.h
+        header/Tile.h
+        header/Map.h
+        header/CollisionCreator.h
+        header/CollisonBound.h
+        cpps/UI/Button.cpp
+        cpps/UI/Button.h
+        cpps/UI/Menu.cpp
+        cpps/UI/Menu.h
+        cpps/Scenes/MenuScene.cpp
+        cpps/Scenes/MenuScene.h
 )
 
-#Tell compiler where headers live
-target_include_directories(game PRIVATE
-        ${CMAKE_SOURCE_DIR}/header
-)
+# Include directories
+target_include_directories(game PRIVATE ${CMAKE_SOURCE_DIR}/header)
 
+# Link libraries
 target_link_libraries(game
-    PRIVATE
+        PRIVATE
         sfml-graphics
         sfml-window
         sfml-system
         box2d
+
 )
