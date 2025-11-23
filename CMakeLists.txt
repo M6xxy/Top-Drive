@@ -49,6 +49,16 @@ add_executable(game main.cpp
 #Tell compiler where headers live
 target_include_directories(game PRIVATE
         ${CMAKE_SOURCE_DIR}/header
+        cpps/MapEditor.cpp
+        header/MapEditor.h
+        cpps/Tile.cpp
+        header/Tile.h
+        cpps/Map.cpp
+        header/Map.h
+        cpps/CollisionCreator.cpp
+        header/CollisionCreator.h
+        cpps/CollisonBound.cpp
+        header/CollisonBound.h
 )
 
 target_link_libraries(game

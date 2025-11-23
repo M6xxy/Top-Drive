@@ -5,6 +5,11 @@
 #include "header/PhysicsWorld.h"
 #include "header/Player.h"
 
+#include "header/CollisionCreator.h"
+#include "header/LoadSprites.h"
+#include "header/Map.h"
+#include "header/MapEditor.h"
+
 int main() {
 
   //DELTA CLOCK
@@ -52,6 +57,22 @@ int main() {
     {400.f, 200.f},
     5.0f // Speed in m/s
   );
+  //Load Map Editor
+  MapEditor mapEditor;
+  b2Vec2 gravity(0.0f, 0.0f);
+  b2World world(gravity);
+
+  //Create Map
+  Map testMap;
+  testMap.setTile(1,0,0);
+  testMap.setTile(1,1,0);
+  testMap.setTile(0,2,0);
+  testMap.setTile(1,3,0);
+
+  //Create Collsion
+  CollisionCreator collisionCreator;
+  collisionCreator.createCollision(world,collisionCreator.tileCollisonVector,testMap);
+
 
   //GAME LOOP
   while (window.isOpen()) {
@@ -79,6 +100,17 @@ int main() {
     window.clear();
     window.draw(shape);
     window.draw(player.getSprite());
+
+    //window.draw(shape);
+   // spriteLoader.Draw(window,playerSprite);
+
+    //Map
+    testMap.render(mapEditor.tileLibrary,window);
+
+    //Collision display
+    collisionCreator.render(window,collisionCreator.tileInstances);
+
+    //Display
     window.display();
   }
 }
