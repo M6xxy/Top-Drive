@@ -48,6 +48,12 @@ add_executable(game
         header/Map.h
         header/CollisionCreator.h
         header/CollisonBound.h
+        cpps/UI/Button.cpp
+        cpps/UI/Button.h
+        cpps/UI/Menu.cpp
+        cpps/UI/Menu.h
+        cpps/Scenes/MenuScene.cpp
+        cpps/Scenes/MenuScene.h
 )
 
 # Include directories

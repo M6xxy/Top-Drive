@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <../../../../header/movement.h>
 #include <box2d/box2d.h>
+
+#include "cpps/Scenes/MenuScene.h"
 #include "header/LoadSprites.h"
 #include "header/PhysicsWorld.h"
 #include "header/Player.h"
@@ -12,6 +14,8 @@
 
 int main() {
 
+  //MENU STATE
+  int menuState = 0;
   //DELTA CLOCK
   sf::Clock dt_clock;
 
@@ -73,6 +77,10 @@ int main() {
   CollisionCreator collisionCreator;
   collisionCreator.createCollision(physics.world(),collisionCreator.tileCollisonVector,testMap);
 
+  //Create Menu
+
+  //Menu
+  MenuScene mainMenu(window);
 
   //GAME LOOP
   while (window.isOpen()) {
@@ -86,7 +94,9 @@ int main() {
     // 2. Delta time
     float dt = dt_clock.restart().asSeconds();
 
-
+    //Get mouse properties
+    sf::Vector2f mousePos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
+    bool mousePressed = sf::Mouse::isButtonPressed(sf::Mouse::Left);
 
     // 3. Movement Intent
     MovementIntent intent = movement.captureInput();
@@ -95,25 +105,30 @@ int main() {
     player.updatePhysics(intent);
     physics.step(dt);
 
-
-
-
-
     // Physics visuals
     player.syncSpriteFromPhysics();
 
     // 4. Render
-    window.clear();
-    //Map
-    testMap.render(mapEditor.tileLibrary,window);
-    //Collision display
-    collisionCreator.render(window,collisionCreator.tileInstances);
 
-    //Player Sprite
-    window.draw(player.getSprite());
+    //Menu
+    if (mainMenu.state == 0) {
+      mainMenu.update(mousePos,mousePressed);
+      window.clear();
+      mainMenu.draw(window);
+    } else {
+      //Map
+      testMap.render(mapEditor.tileLibrary,window);
+      //Collision display
+      collisionCreator.render(window,collisionCreator.tileInstances);
 
-    //window.draw(shape);
-   // spriteLoader.Draw(window,playerSprite);
+      //Player Sprite
+      window.draw(player.getSprite());
+    }
+
+
+
+
+    //spriteLoader.Draw(window,playerSprite);
 
 
     //Display
