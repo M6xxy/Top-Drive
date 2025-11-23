@@ -28,7 +28,7 @@ void Map::render(std::vector<Tile> tileLibrary, sf::RenderWindow& window) {
             int id =mapGrid[y][x];
             Tile& t = tileLibrary[id];
             //Check if id = 1
-            if (id == 1) {
+            if (id == 1 || id == 2) {
                 tileRect.setFillColor(sf::Color::Green);
             } else {
                 tileRect.setFillColor(sf::Color::Red);

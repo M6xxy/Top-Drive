@@ -37,7 +37,15 @@ private:
         grass.grip = 1.0f;
         grass.name = "Grass Tile";
 
-        tileLibrary.push_back(track);
+        tileLibrary.push_back(grass);
+
+        //Tile 3
+        Tile corner;
+        corner.ID = 2;
+        corner.grip = 1.0f;
+        corner.name = "Corner Top Tile";
+
+        tileLibrary.push_back(corner);
     }
 };
 

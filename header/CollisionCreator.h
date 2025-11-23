@@ -47,6 +47,24 @@ private:
 
         //Add to vector
         tileCollisonVector.push_back(track);
+
+        //Tile 2
+        CollisonBound corner;
+        corner.tileId = 2;
+        //Shape 1
+        corner.verteciesPart1[0].Set(-1.0f, -1.0f);
+        corner.verteciesPart1[1].Set( 1.0f, -1.0f);
+        corner.verteciesPart1[2].Set( 1.0f,  0.0f);
+        corner.verteciesPart1[3].Set(-1.0f,  0.0f);
+
+        //Shape 2
+        corner.verteciesPart2[0].Set(-0.5f, 0.0f);
+        corner.verteciesPart2[1].Set( 0.5f, 0.0f);
+        corner.verteciesPart2[2].Set( 0.5f, 0.6f);
+        corner.verteciesPart2[3].Set(-0.5f, 0.6f);
+
+        //Add to vector
+        tileCollisonVector.push_back(corner);
     }
 };
 
