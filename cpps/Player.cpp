@@ -32,11 +32,13 @@ Player::Player(PhysicsWorld& physics, LoadSprites& loader, const std::string& te
 
     // Change shape based on sprite
     b2PolygonShape boxShape;
-    float hitboxScale = 0.5f; // 50% of sprite
+    float hitboxScale = 1000.0f;
+    float widthMeters  = physics.toMeters(4.0f);
+    float heightMeters = physics.toMeters(9.0f);
 
     boxShape.SetAsBox(
-        m_physics.toMeters((bounds.width  * m_sprite.getScale().x * hitboxScale) / 2.f),
-        m_physics.toMeters((bounds.height * m_sprite.getScale().y * hitboxScale) / 2.f)
+        m_physics.toMeters((widthMeters  * m_sprite.getScale().x * hitboxScale) / 2.f),
+        m_physics.toMeters((heightMeters * m_sprite.getScale().y * hitboxScale) / 2.f)
     );
 
     b2FixtureDef fixtureDef;
