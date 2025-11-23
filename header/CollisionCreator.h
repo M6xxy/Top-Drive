@@ -39,32 +39,83 @@ private:
         track.verteciesPart1[1].Set( 1.0f, -1.0f);  // bottom-right
         track.verteciesPart1[2].Set( 1.0f,  1.0f);  // top-right
         track.verteciesPart1[3].Set(-1.0f,  1.0f);  // top-left
-        //Shape 2
-        track.verteciesPart2[0].Set(-0.5f, 0.0f);
-        track.verteciesPart2[1].Set(-0.5f, 1.0f);
-        track.verteciesPart2[2].Set( 1.0f, 1.0f);
-        track.verteciesPart2[3].Set( 1.0f, 0.0f);
+
+        // Square 2 (Part2) - overlapping same size
+        track.verteciesPart2[0].Set(-1.0f, -1.0f);  // bottom-left
+        track.verteciesPart2[1].Set( 1.0f, -1.0f);  // bottom-right
+        track.verteciesPart2[2].Set( 1.0f,  1.0f);  // top-right
+        track.verteciesPart2[3].Set(-1.0f,  1.0f);  // top-left
 
         //Add to vector
         tileCollisonVector.push_back(track);
 
         //Tile 2
-        CollisonBound corner;
-        corner.tileId = 2;
+        CollisonBound cornerTop;
+        cornerTop.tileId = 2;
         //Shape 1
-        corner.verteciesPart1[0].Set(-1.0f, -1.0f);
-        corner.verteciesPart1[1].Set( 1.0f, -1.0f);
-        corner.verteciesPart1[2].Set( 1.0f,  0.0f);
-        corner.verteciesPart1[3].Set(-1.0f,  0.0f);
+        cornerTop.verteciesPart1[0].Set(-1.0f, -1.0f);
+        cornerTop.verteciesPart1[1].Set( 1.0f, -1.0f);
+        cornerTop.verteciesPart1[2].Set( 1.0f,  0.0f);
+        cornerTop.verteciesPart1[3].Set(-1.0f,  0.0f);
 
-        //Shape 2
-        corner.verteciesPart2[0].Set(-0.5f, 0.0f);
-        corner.verteciesPart2[1].Set( 0.5f, 0.0f);
-        corner.verteciesPart2[2].Set( 0.5f, 0.6f);
-        corner.verteciesPart2[3].Set(-0.5f, 0.6f);
+        // Top trapezoid (narrower at the top)
+        cornerTop.verteciesPart2[0].Set(-1.f, 0.0f);   // bottom-left of trapezoid
+        cornerTop.verteciesPart2[1].Set( 1.f, 0.0f);   // bottom-right of trapezoid
+        cornerTop.verteciesPart2[2].Set( 0.5f, 0.6f);   // top-right of trapezoid
+        cornerTop.verteciesPart2[3].Set(-0.5f, 0.6f);   // top-left of trapezoid
 
         //Add to vector
-        tileCollisonVector.push_back(corner);
+        tileCollisonVector.push_back(cornerTop);
+
+        //Tile 3
+        CollisonBound cornerLeft;
+        cornerLeft.tileId = 3;
+        //Shape 1
+        cornerLeft.verteciesPart1[0].Set( 1.0f, -1.0f);
+        cornerLeft.verteciesPart1[1].Set( 1.0f,  1.0f);
+        cornerLeft.verteciesPart1[2].Set( 0.0f,  1.0f);
+        cornerLeft.verteciesPart1[3].Set( 0.0f, -1.0f);
+
+        cornerLeft.verteciesPart2[0].Set( 0.0f, -1.0f);
+        cornerLeft.verteciesPart2[1].Set( 0.0f,  1.0f);
+        cornerLeft.verteciesPart2[2].Set(-0.6f, 0.5f);
+        cornerLeft.verteciesPart2[3].Set(-0.6f, -0.5f);
+
+        //Add to vector
+        tileCollisonVector.push_back(cornerLeft);
+
+        //Tile 3
+        CollisonBound cornerRight;
+        cornerRight.tileId = 4;
+        //Shape 1
+        cornerRight.verteciesPart1[0].Set(-1.0f,  1.0f);
+        cornerRight.verteciesPart1[1].Set(-1.0f, -1.0f);
+        cornerRight.verteciesPart1[2].Set( 0.0f, -1.0f);
+        cornerRight.verteciesPart1[3].Set( 0.0f,  1.0f);
+
+        cornerRight.verteciesPart2[0].Set(0.0f,  1.0f);
+        cornerRight.verteciesPart2[1].Set(0.0f, -1.0f);
+        cornerRight.verteciesPart2[2].Set(0.6f, -0.5f);
+        cornerRight.verteciesPart2[3].Set(0.6f,  0.5f);
+
+        //Add to vector
+        tileCollisonVector.push_back(cornerRight);
+
+        //Tile 3
+        CollisonBound cornerBottom;
+        cornerBottom.tileId = 5;
+        //Shape 1
+        cornerBottom.verteciesPart1[0].Set( 1.0f,  1.0f);
+        cornerBottom.verteciesPart1[1].Set(-1.0f,  1.0f);
+        cornerBottom.verteciesPart1[2].Set(-1.0f,  0.0f);
+        cornerBottom.verteciesPart1[3].Set( 1.0f,  0.0f);
+
+        cornerBottom.verteciesPart2[0].Set( 1.0f,  0.0f);
+        cornerBottom.verteciesPart2[1].Set(-1.0f,  0.0f);
+        cornerBottom.verteciesPart2[2].Set(-0.5f, -0.6f);
+        cornerBottom.verteciesPart2[3].Set( 0.5f, -0.6f);
+        //Add to vector
+        tileCollisonVector.push_back(cornerBottom);
     }
 };
 
