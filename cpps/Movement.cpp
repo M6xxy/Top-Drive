@@ -18,9 +18,9 @@ MovementIntent Movement::captureInput() const {
         intent.steer += 1.0f;
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        intent.throttle -= 1.0f;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         intent.throttle += 1.0f;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+        intent.throttle -= 1.0f;
 
     //Handbrake
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))

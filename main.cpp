@@ -1,6 +1,9 @@
 #include <SFML/Graphics.hpp>
-#include <../../../../header/movement.h>
+#include <../../../../header/Movement.h>
 #include <box2d/box2d.h>
+#include "header/CarComponents.h"
+#include "header/Car.h"
+#include "header/PlayerCar.h"
 
 #include "cpps/Scenes/MenuScene.h"
 #include "header/LoadSprites.h"
@@ -53,8 +56,7 @@ int main() {
   groundShape.setPosition(400.f, 750.f);
   groundShape.setFillColor(sf::Color::Green);
 
-  // Player
-  Player player(
+  PlayerCar playerCar(
     physics,
     spriteLoader,
     "../../assets/textures/placeholder-car.png",
@@ -119,12 +121,10 @@ int main() {
     // 3. Movement Intent
     MovementIntent intent = movement.captureInput();
 
-    // Intent VS physics
-    player.updatePhysics(intent);
+    // Physics
+    playerCar.updatePhysics(intent, dt);
     physics.step(dt);
-
-    // Physics visuals
-    player.syncSpriteFromPhysics();
+    playerCar.syncSpriteFromPhysics();
 
     // 4. Render
 

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.11)
 project(build_setup)
 
 # Require modern C++
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Fetch Content
@@ -43,6 +43,16 @@ add_executable(game
         header/loadSprites.h
         header/PhysicsWorld.h
         header/Player.h
+        cpps/Player.cpp
+        cpps/PhysicsWorld.cpp
+        header/CarComponents.h
+        cpps/CarComponents.cpp
+        header/Car.h
+        cpps/Car.cpp
+        header/PlayerCar.h
+        cpps/PlayerCar.cpp
+        cpps/CarPhysics.cpp
+        header/CarPhysics.h
         header/MapEditor.h
         header/Tile.h
         header/Map.h
