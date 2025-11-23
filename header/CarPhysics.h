@@ -36,4 +36,6 @@ private:
 
     void applyBraking(const MovementIntent& intent, const b2Vec2& vel, float dt);
 
+    void applyLateralFriction(float dt);
+
 };

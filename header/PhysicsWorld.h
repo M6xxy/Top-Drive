@@ -14,7 +14,7 @@ public:
 
     void step(float dt);
 
-    void applyMovementIntent(b2Body* body, const MovementIntent& intent, float maxSpeedMetersPerSec);
+    static void applyMovementIntent(b2Body* body, const MovementIntent& intent, float maxSpeedMetersPerSec);
 
     // Unprocessed world access for map editing
     b2World& world();

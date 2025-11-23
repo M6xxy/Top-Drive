@@ -63,6 +63,10 @@ void CarPhysics::update(const MovementIntent &intent, float dt) {
         wheelOmega = forwardSpeed / wheelRadius; // rad/s sadly
     }
 
+    // Cancel some lateral sliding
+    applyLateralFriction(dt);
+
+
     //Split throttle into acceleration and brake
     float throttle = intent.throttle;
     float accel = 0.f;
@@ -152,6 +156,47 @@ void CarPhysics::applyBraking(const MovementIntent &intent, const b2Vec2 &vel, f
     m_body->ApplyLinearImpulseToCenter(brakeImpulse, true);
 
 }
+
+void CarPhysics::applyLateralFriction(float dt) {
+    if (!m_body) return;
+
+    float angle = m_body->GetAngle();
+
+    // Forward and right vector
+    b2Vec2 fwd(-std::sin(angle), std::cos(angle));
+    b2Vec2 right(fwd.y, -fwd.x);
+
+    b2Vec2 vel = m_body->GetLinearVelocity();
+
+    // Lateral Velocity
+    float lateralSpeed = b2Dot(vel,right);
+    b2Vec2 lateralVel = lateralSpeed * right;
+
+    float mass = m_body->GetMass();
+
+    // Impulse to cancel out sideways movements hopefully
+    b2Vec2 impulse = -mass * lateralVel;
+
+    //Clamp to so my car doesent stop instatly sliding at 60mph
+    float maxsLateralImpulse = mass * 10.0f;
+    float impLen = impulse.Length();
+    if (impLen > maxsLateralImpulse) {
+        impulse *= (maxsLateralImpulse / impLen);
+    }
+
+    m_body->ApplyLinearImpulseToCenter(impulse, true);
+
+    // rolling resistance
+    float forwardSpeed = b2Dot(vel, fwd);
+    b2Vec2 forwardVel = forwardSpeed * fwd;
+
+    float dragCoeffienct = 0.5f; // Drag coeffcient If too strong change me
+
+    b2Vec2 dragForce = -dragCoeffienct * forwardVel;
+    m_body->ApplyForceToCenter(dragForce, true);
+
+}
+
 
 
 
