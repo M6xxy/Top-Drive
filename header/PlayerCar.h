@@ -7,7 +7,7 @@
 #include <box2d/box2d.h>
 #include <string>
 #include <SFML/Graphics.hpp>
-#include "car.h"
+#include "CarPhysics.h"
 #include "Movement.h"
 
 class PhysicsWorld;
@@ -26,7 +26,6 @@ public:
 
     // Helpers
     sf::Sprite& getSprite();
-    b2Body* getBody();
     Car& getCar();
     const Car& getCar() const;
 
@@ -34,6 +33,5 @@ private:
     PhysicsWorld& m_physics;
     sf::Texture m_texture;
     sf::Sprite m_sprite;
-    b2Body* m_body = nullptr;
-    Car m_car;
+    CarPhysics m_carPhysics;
 };

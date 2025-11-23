@@ -50,6 +50,8 @@ add_executable(game main.cpp
         cpps/Car.cpp
         header/PlayerCar.h
         cpps/PlayerCar.cpp
+        cpps/CarPhysics.cpp
+        header/CarPhysics.h
 )
 
 #Tell compiler where headers live
