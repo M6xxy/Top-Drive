@@ -26,17 +26,6 @@ int main() {
   Movement movement;
 
 
-  // Cars Ground Body
-  {
-    b2BodyDef groundDef;
-    groundDef.position.Set(physics.toMeters(400.f), physics.toMeters(750.f));
-    b2Body* ground = physics.world().CreateBody(&groundDef);
-
-    b2PolygonShape groundBox;
-    groundBox.SetAsBox(physics.toMeters(400.f), physics.toMeters(20.f));
-    ground->CreateFixture(&groundBox, 0.0f);
-  }
-
   // Car Visual Body
   sf::RectangleShape groundShape;
   groundShape.setSize({800.f, 40.f});
