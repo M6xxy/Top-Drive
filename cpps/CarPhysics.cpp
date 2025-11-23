@@ -18,10 +18,11 @@ CarPhysics::CarPhysics(PhysicsWorld& physics, const CarSpec &spec, const b2Vec2 
 
     float fullWidth = 1.8f; // 1.8 meters
     float fullLength = 4.2; // 4.2 meters
+    float scale = 2.7f;
 
     // Basic box shop from a default size to fit chassis
-    float halfWidth = fullWidth * 0.5f;
-    float halfHeight = fullLength * 0.5f;
+    float halfWidth = fullWidth * 0.5f / scale;
+    float halfHeight = fullLength * 0.5f / scale;
 
     b2PolygonShape boxShape;
     boxShape.SetAsBox(halfWidth, halfHeight);
@@ -195,6 +196,40 @@ void CarPhysics::applyLateralFriction(float dt) {
     b2Vec2 dragForce = -dragCoeffienct * forwardVel;
     m_body->ApplyForceToCenter(dragForce, true);
 
+}
+
+void CarPhysics::drawDebug(sf::RenderWindow& window)
+{
+    // Get body position in pixels
+    b2Vec2 posMeters = m_body->GetPosition();
+    float angle = m_body->GetAngle();
+
+    sf::RectangleShape debugShape;
+
+    // Get fixture shape
+    b2Fixture* fixture = m_body->GetFixtureList();
+    b2PolygonShape* poly = static_cast<b2PolygonShape*>(fixture->GetShape());
+
+    // Box2D gives half-width/half-height in meters
+    float halfW = poly->m_vertices[1].x; // local vertex
+    float halfH = poly->m_vertices[2].y;
+
+    debugShape.setSize({
+        m_physics.toPixels(halfW * 2.f),
+        m_physics.toPixels(halfH * 2.f)
+    });
+
+    debugShape.setOrigin(debugShape.getSize() / 2.f);
+
+    debugShape.setFillColor(sf::Color::Transparent);
+    debugShape.setOutlineThickness(2.f);
+    debugShape.setOutlineColor(sf::Color::Red);
+
+    debugShape.setPosition(m_physics.toPixels(posMeters.x),
+                           m_physics.toPixels(posMeters.y));
+    debugShape.setRotation(angle * 180.f / b2_pi);
+
+    window.draw(debugShape);
 }
 
 

@@ -112,7 +112,7 @@ CarSpec debugCarSpec = makeTestCarSpec();
     physics,
     spriteLoader,
     "../../assets/textures/placeholder-car.png",
-    {400.f, 400.f},
+    {75.f, 100.f},
     debugCarSpec
   );
 
@@ -185,6 +185,7 @@ CarSpec debugCarSpec = makeTestCarSpec();
       testMap.render(mapEditor.tileLibrary,window);
       //Collision display
       collisionCreator.render(window,collisionCreator.tileInstances);
+      playerCar.m_carPhysics.drawDebug(window);
 
       //Player Sprite
       window.draw(playerCar.getSprite());

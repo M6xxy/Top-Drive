@@ -24,6 +24,7 @@ public:
     const Car& getCar() const;
     Car& getCar();
 
+    void drawDebug(sf::RenderWindow &window);
 private:
     PhysicsWorld& m_physics;
     Car m_car;
@@ -37,5 +38,6 @@ private:
     void applyBraking(const MovementIntent& intent, const b2Vec2& vel, float dt);
 
     void applyLateralFriction(float dt);
+
 
 };

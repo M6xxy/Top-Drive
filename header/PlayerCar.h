@@ -28,10 +28,10 @@ public:
     sf::Sprite& getSprite();
     Car& getCar();
     const Car& getCar() const;
-
+    CarPhysics m_carPhysics;
 private:
     PhysicsWorld& m_physics;
     sf::Texture m_texture;
     sf::Sprite m_sprite;
-    CarPhysics m_carPhysics;
+
 };
