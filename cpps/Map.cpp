@@ -14,7 +14,7 @@ Map::Map() {
 //Rendering
 void Map::render(std::vector<Tile> tileLibrary, sf::RenderWindow& window) {
     //SIZE OF TILE
-    const int TILE_SIZE = 32;
+    const int TILE_SIZE = 60;
 
     //Test Square
     sf::RectangleShape tileRect(sf::Vector2f(TILE_SIZE,TILE_SIZE));

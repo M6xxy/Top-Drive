@@ -45,6 +45,10 @@ add_executable(game main.cpp
         header/Tile.h
         cpps/Map.cpp
         header/Map.h
+        cpps/CollisionCreator.cpp
+        header/CollisionCreator.h
+        cpps/CollisonBound.cpp
+        header/CollisonBound.h
 )
 target_link_libraries(game
     PRIVATE

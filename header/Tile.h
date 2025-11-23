@@ -9,6 +9,7 @@
 #include "box2d/b2_fixture.h"
 #include "box2d/b2_math.h"
 #include "box2d/b2_polygon_shape.h"
+#include "SFML/System/Vector2.hpp"
 
 
 class Tile {
