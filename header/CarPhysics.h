@@ -35,7 +35,7 @@ private:
 
     void applySteering(const MovementIntent& intent, float forwardSpeed);
 
-    void applyBraking(const MovementIntent& intent, const b2Vec2& vel, float dt);
+    void applyBraking(const MovementIntent& intent, const b2Vec2& vel, float forwardSpeed, float dt);
 
     void applyLateralFriction(float dt);
 
