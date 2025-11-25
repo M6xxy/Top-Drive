@@ -28,10 +28,14 @@ void Map::render(std::vector<Tile> tileLibrary, sf::RenderWindow& window) {
             int id =mapGrid[y][x];
             Tile& t = tileLibrary[id];
             //Check if id = 1
-            if (id > 0 && id < 100) {
+            if (id > 0 && id < 80) {
                 tileRect.setFillColor(sf::Color::Green);
             } else {
                 tileRect.setFillColor(sf::Color::Red);
+            }
+            // If checkpoint
+            if (id == 99) {
+                tileRect.setFillColor(sf::Color::Yellow);
             }
             //Set tile
             tileRect.setPosition(x * TILE_SIZE, y * TILE_SIZE);
