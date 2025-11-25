@@ -68,23 +68,30 @@ void CarPhysics::update(const MovementIntent &intent, float dt) {
     applyLateralFriction(dt);
 
 
-    //Split throttle into acceleration and brake
+    //Split throttle into acceleration and brake / reverse
     float throttle = intent.throttle;
     float accel = 0.f;
     float brake = 0.f;
+    float reverse = 0.f;
     if (throttle > 0.f) {
         accel = throttle;
     } else if (throttle < 0.f) {
-        brake = -throttle;
+        if (forwardSpeed > 1.f) {
+            brake = -throttle;
+        } else {
+            reverse = -throttle;
+        }
     }
 
+    float engineThrottle = accel + reverse;
+
     // Update drive and engine state
-    m_car.updateDrivetrain(accel, brake, wheelOmega, dt);
+    m_car.updateDrivetrain(engineThrottle, brake, wheelOmega, dt);
 
     // Apply force and torque to car
     applyDrive(intent, forwardSpeed, wheelRadius, dt);
     applySteering(intent, forwardSpeed);
-    applyBraking(intent, vel, dt);
+    applyBraking(intent, vel, forwardSpeed, dt);
 }
 
 void CarPhysics::applyDrive(const MovementIntent &intent, float forwardSpeed, float wheelRadius, float dt) {
@@ -92,13 +99,22 @@ void CarPhysics::applyDrive(const MovementIntent &intent, float forwardSpeed, fl
 
     float throttle = intent.throttle;
     float accel = (throttle > 0.f) ? throttle : 0.f;
+    float reverse = 0.f;
 
     // Calculate drive torque at wheels
-    float totalWheelTorque = 0.f;
-    if (accel > 0.01f) {
-        const float torqueMultiplier = 0.1f; // 30% normal power
-        totalWheelTorque = m_car.getWheelTorque() * accel * torqueMultiplier;
+    if (throttle > 0.01f) {
+        accel = throttle; // forward
+    } else if (throttle < 0.f && std::fabs(forwardSpeed) < 1.0f) {
+        reverse = -throttle;
     }
+
+    float driveAmount = accel + reverse;
+    if (driveAmount < 0.01f) {
+        return;
+    }
+
+    float torqueLimiter = 0.3f;
+    float totalWheelTorque = m_car.getWheelTorque() * driveAmount * torqueLimiter;
 
     // Turn torque into drive force going forward
     float driveForceM = 0.f;
@@ -109,7 +125,8 @@ void CarPhysics::applyDrive(const MovementIntent &intent, float forwardSpeed, fl
     if (std::fabs(driveForceM) > 0.001f) {
         float angle = m_body->GetAngle();
         b2Vec2 fwd(-std::sin(angle), std::cos(angle));
-        b2Vec2 driveForce = driveForceM * fwd;
+        float dir = (accel > 0.f) ? 1.0f : -1.0f;
+        b2Vec2 driveForce = (driveForceM * dir) * fwd;
         m_body->ApplyForceToCenter(driveForce, true);
     }
 }
@@ -135,11 +152,14 @@ void CarPhysics::applySteering(const MovementIntent &intent, float forwardSpeed)
     m_body->SetAngularVelocity(desiredAngularVel);
 }
 
-void CarPhysics::applyBraking(const MovementIntent &intent, const b2Vec2 &vel, float dt) {
+void CarPhysics::applyBraking(const MovementIntent &intent, const b2Vec2 &vel, float forwardSpeed, float dt) {
     if (!m_body) return;
 
     float throttle = intent.throttle;
-    float brake = (throttle < 0.f) ? -throttle : 0.f;
+    float brake = 0.f;
+    if (throttle < 0.f && forwardSpeed > 0.5f) {
+        brake = -throttle;
+    }
 
     if (brake <= 0.01f) return;
 

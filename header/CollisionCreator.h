@@ -8,7 +8,7 @@
 
 #include "CollisonBound.h"
 #include "Map.h"
-#include "../cmake-build-debug-coverage/_deps/box2d-src/include/box2d/b2_world.h"
+#include "../cmake-build-debug/_deps/box2d-src/include/box2d/b2_world.h"
 
 const float PIXELS_PER_METER = 30.0f;  // 30 pixels = 1 meter
 const float TILE_SIZE = 60.0f;         // pixels
