@@ -134,7 +134,7 @@ void CarPhysics::applyDrive(const MovementIntent &intent, float forwardSpeed, fl
 void CarPhysics::applySteering(const MovementIntent &intent, float forwardSpeed) {
     if (!m_body) return;
 
-    const float baseTurnSpeed = 2.5f;
+    const float baseTurnSpeed = 13.5f;
     const float minSteerSpeed = 0.5f;
     const float steerScaleSpeed = 10.f;
 
