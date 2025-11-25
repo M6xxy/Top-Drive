@@ -113,7 +113,7 @@ void CarPhysics::applyDrive(const MovementIntent &intent, float forwardSpeed, fl
         return;
     }
 
-    float torqueLimiter = 0.3f;
+    float torqueLimiter = 0.1f;
     float totalWheelTorque = m_car.getWheelTorque() * driveAmount * torqueLimiter;
 
     // Turn torque into drive force going forward
@@ -134,7 +134,7 @@ void CarPhysics::applyDrive(const MovementIntent &intent, float forwardSpeed, fl
 void CarPhysics::applySteering(const MovementIntent &intent, float forwardSpeed) {
     if (!m_body) return;
 
-    const float baseTurnSpeed = 13.5f;
+    const float baseTurnSpeed = 6.5f;
     const float minSteerSpeed = 0.5f;
     const float steerScaleSpeed = 10.f;
 
