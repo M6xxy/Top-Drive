@@ -8,6 +8,7 @@
 #include "header/PlayerCar.h"
 #include "header/LoadSprites.h"
 #include "cpps/Scenes/MenuScene.h"
+#include "cpps/UI/rpmGauge.h"
 #include "header/PhysicsWorld.h"
 #include "header/CollisionCreator.h"
 #include "header/MapEditor.h"
@@ -107,6 +108,9 @@ int main() {
   //Menu
   MenuScene mainMenu(window);
 
+  // RPM Gauge
+  rpmGauge RPMGauge;
+
 
 CarSpec debugCarSpec = makeTestCarSpec();
 
@@ -178,6 +182,9 @@ CarSpec debugCarSpec = makeTestCarSpec();
     physics.step(dt);
     playerCar.syncSpriteFromPhysics();
 
+    // Update RPM gauge
+    RPMGauge.update(playerCar.getCar());
+
     // 4. Render
 
     //Menu
@@ -193,6 +200,9 @@ CarSpec debugCarSpec = makeTestCarSpec();
       playerCar.m_carPhysics.drawDebug(window);
       //Player Sprite
       window.draw(playerCar.getSprite());
+      //RPM Gauge
+      RPMGauge.setVisible(true);
+      RPMGauge.draw(window);
       //Check checkpoints
       checkpointHandler.checkIfInCheckpoints(playerCar);
 

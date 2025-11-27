@@ -23,6 +23,8 @@ void Car::updateDrivetrain(float throttle, float brake, float wheelAngularSpeed,
     const auto& eng = m_spec.engine;
     const auto& trans = m_spec.transmission;
 
+    float rpm = m_state.rpm;
+
     // Calculate engine rpm from wheel speed and gearing
     if (m_state.gear > 0 && m_state.gear <= trans.numGears) {
         float gearRatio = trans.gearRatios[m_state.gear - 1];
@@ -31,6 +33,13 @@ void Car::updateDrivetrain(float throttle, float brake, float wheelAngularSpeed,
         // Change wheel speed to engine rpm and convert
         float engineRadPerSec = wheelAngularSpeed * totalRatio;
         float targetRpm = engineRadPerSec * (60.f / (2.f * 3.14));
+
+        // If wheels are not turning fast let throttle pull rpm higher up to accomodate
+        if (std::fabs(wheelAngularSpeed) < 0.5f) {
+            float freeRevTarget = eng.idleRpm + throttle * (eng.rpmLimit - eng.idleRpm);
+            // User whatever rpm  is higher wheel based rpm or free moving
+            targetRpm = std::max(targetRpm, freeRevTarget);
+        }
 
         // Simulate engine inertia
         float rpmDiff = targetRpm - m_state.rpm;
@@ -45,6 +54,11 @@ void Car::updateDrivetrain(float throttle, float brake, float wheelAngularSpeed,
         rpmDiff = std::clamp(rpmDiff, -maxDelta, maxDelta);
         m_state.rpm += rpmDiff;
     }
+
+    //Convert rpm to a reasonable range
+    rpm = std::clamp(rpm, eng.idleRpm * 0.5f, eng.rpmLimit * 1.05f);
+
+    m_state.rpm = rpm;
 }
 
 float Car::getWheelTorque() const {
