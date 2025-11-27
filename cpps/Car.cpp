@@ -42,17 +42,17 @@ void Car::updateDrivetrain(float throttle, float brake, float wheelAngularSpeed,
         }
 
         // Simulate engine inertia
-        float rpmDiff = targetRpm - m_state.rpm;
+        float rpmDiff = targetRpm - rpm;
         float maxDelta = eng.flywheelInertia > 0.f ? (dt * 8000.f / eng.flywheelInertia) : 999999.f;
         rpmDiff = std::clamp(rpmDiff, -maxDelta, maxDelta);
-        m_state.rpm += rpmDiff;
+        rpm += rpmDiff;
     } else {
         // If cars in neutral rely solely on throttle
         float targetRpm = eng.idleRpm + throttle * (eng.rpmLimit - eng.idleRpm);
-        float rpmDiff = targetRpm - m_state.rpm;
+        float rpmDiff = targetRpm - rpm;
         float maxDelta = dt * 4000.f;
         rpmDiff = std::clamp(rpmDiff, -maxDelta, maxDelta);
-        m_state.rpm += rpmDiff;
+        rpm += rpmDiff;
     }
 
     //Convert rpm to a reasonable range

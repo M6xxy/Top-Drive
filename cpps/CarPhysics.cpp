@@ -52,6 +52,8 @@ void CarPhysics::update(const MovementIntent &intent, float dt) {
     // Aprox wheel speed from velocity following forward direction
     const float wheelRadius = 0.3f;
 
+
+
     b2Vec2 vel = m_body->GetLinearVelocity();
     float angle = m_body->GetAngle();
 
