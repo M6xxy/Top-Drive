@@ -65,13 +65,15 @@ void CarPhysics::update(const MovementIntent &intent, float dt) {
     }
 
     // Cancel some lateral sliding
-    applyLateralFriction(dt);
+    bool handbrake = intent.handbrake;
+    applyLateralFriction(dt, handbrake);
 
 
     //Split throttle into acceleration and brake / reverse
     float throttle = intent.throttle;
     float accel = 0.f;
     float brake = 0.f;
+
     float reverse = 0.f;
     if (throttle > 0.f) {
         accel = throttle;
@@ -92,6 +94,7 @@ void CarPhysics::update(const MovementIntent &intent, float dt) {
     applyDrive(intent, forwardSpeed, wheelRadius, dt);
     applySteering(intent, forwardSpeed);
     applyBraking(intent, vel, forwardSpeed, dt);
+
 }
 
 void CarPhysics::applyDrive(const MovementIntent &intent, float forwardSpeed, float wheelRadius, float dt) {
@@ -179,7 +182,7 @@ void CarPhysics::applyBraking(const MovementIntent &intent, const b2Vec2 &vel, f
 
 }
 
-void CarPhysics::applyLateralFriction(float dt) {
+void CarPhysics::applyLateralFriction(float dt, bool handbrake) {
     if (!m_body) return;
 
     float angle = m_body->GetAngle();
@@ -194,13 +197,14 @@ void CarPhysics::applyLateralFriction(float dt) {
     float lateralSpeed = b2Dot(vel,right);
     b2Vec2 lateralVel = lateralSpeed * right;
 
+    // Mass of car
     float mass = m_body->GetMass();
 
     // Impulse to cancel out sideways movements hopefully
     b2Vec2 impulse = -mass * lateralVel;
 
-    //Clamp to so my car doesent stop instatly sliding at 60mph
-    float maxsLateralImpulse = mass * 10.0f;
+    //Clamp so my car doesent stop instatly sliding at 60mph
+    float maxsLateralImpulse = mass * (handbrake ? 3.0f : 10.f);
     float impLen = impulse.Length();
     if (impLen > maxsLateralImpulse) {
         impulse *= (maxsLateralImpulse / impLen);
@@ -212,7 +216,7 @@ void CarPhysics::applyLateralFriction(float dt) {
     float forwardSpeed = b2Dot(vel, fwd);
     b2Vec2 forwardVel = forwardSpeed * fwd;
 
-    float dragCoeffienct = 0.5f; // Drag coeffcient If too strong change me
+    float dragCoeffienct = handbrake ? 0.6f : 0.4f; // Drag coeffcient add more drag when handbrake is on
 
     b2Vec2 dragForce = -dragCoeffienct * forwardVel;
     m_body->ApplyForceToCenter(dragForce, true);
