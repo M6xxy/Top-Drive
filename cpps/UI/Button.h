@@ -47,6 +47,7 @@ private:
     sf::Color defaultColour = sf::Color::Cyan;
     sf::Color hoverColour = sf::Color::Blue;
     std::function<void()> callback;
+    bool isPressed = false;
 };
 
 

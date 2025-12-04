@@ -3,15 +3,20 @@
 #include <box2d/box2d.h>
 
 #include "cpps/Game Conditions/CheckpointHandler.h"
+#include "cpps/Game Conditions/GameState.h"
 #include "header/CarComponents.h"
 #include "header/Car.h"
 #include "header/PlayerCar.h"
 #include "header/LoadSprites.h"
 #include "cpps/Scenes/MenuScene.h"
+#include "cpps/Scenes/SettingsScene.h"
 #include "header/PhysicsWorld.h"
 #include "header/CollisionCreator.h"
 #include "header/MapEditor.h"
 #include "header/Player.h"
+
+GameState currentState = GameState::MAIN_MENU;
+
 
 static CarSpec makeTestCarSpec() {
     CarSpec spec;
@@ -102,10 +107,17 @@ int main() {
   // Create Physics World
   LoadSprites spriteLoader;
   PhysicsWorld physics({0.f, 0.f}, 30.f);
-  Movement movement;
+  Movement movement("../../keybinds.txt");
 
   //Menu
+  enum class GameState {
+    MAIN_MENU,
+    GAME,
+    SETTINGS
+};
+
   MenuScene mainMenu(window);
+  SettingsScene settingsMenu(window,movement);
 
 
 CarSpec debugCarSpec = makeTestCarSpec();
@@ -179,23 +191,45 @@ CarSpec debugCarSpec = makeTestCarSpec();
     playerCar.syncSpriteFromPhysics();
 
     // 4. Render
+    window.clear();
 
-    //Menu
-    if (mainMenu.state == 0) {
-      mainMenu.update(mousePos,mousePressed);
-      window.clear();
-      mainMenu.draw(window);
-    } else {
-      //Map
-      testMap.render(mapEditor.tileLibrary,window);
-      //Collision display
-      collisionCreator.render(window,collisionCreator.tileInstances);
-      playerCar.m_carPhysics.drawDebug(window);
-      //Player Sprite
-      window.draw(playerCar.getSprite());
-      //Check checkpoints
-      checkpointHandler.checkIfInCheckpoints(playerCar);
+    switch (currentState) {
+      case ::GameState::MAIN_MENU:
+        mainMenu.update(mousePos,mousePressed);
+        mainMenu.draw(window);
+        if (mainMenu.state == 2) {
+          std::cout << "SETTING STATE TO GAME";
+          currentState = ::GameState::GAME;
+        }
 
+        if (mainMenu.stateSettings == 1) {
+          settingsMenu.stateSettings = 1;
+          std::cout << "SETTING STATE TO SETTINGS";
+          currentState = ::GameState::SETTINGS;
+        }
+        break;
+
+      case ::GameState::GAME:
+        //Map
+        testMap.render(mapEditor.tileLibrary,window);
+        //Collision display
+        collisionCreator.render(window,collisionCreator.tileInstances);
+        playerCar.m_carPhysics.drawDebug(window);
+        //Player Sprite
+        window.draw(playerCar.getSprite());
+        //Check checkpoints
+        checkpointHandler.checkIfInCheckpoints(playerCar);
+        break;
+
+      case ::GameState::SETTINGS:
+        settingsMenu.update(mousePos,mousePressed);
+        settingsMenu.draw(window);
+
+        if (settingsMenu.stateSettings == 0) {
+          mainMenu.stateSettings = 0;
+          std::cout << "SETTING STATE TO MENU";
+          currentState = ::GameState::MAIN_MENU;
+        }
     }
 
 

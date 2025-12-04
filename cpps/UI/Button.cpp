@@ -20,6 +20,11 @@ void Button::update(const sf::Vector2f mousePos, bool mousePressed) {
         if (mousePressed && callback) {
             callback();
         }
+        isPressed = true;
+
+       if (!mousePressed && isPressed) {
+           isPressed = false;
+       }
     } else { // Reset colour
         buttonRect.setFillColor(defaultColour);
     }
