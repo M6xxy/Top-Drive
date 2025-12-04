@@ -35,15 +35,51 @@ MovementIntent Movement::captureInput() const {
 }
 
 sf::Keyboard::Key Movement::stringToKey(const std::string& keyStr) const {
-    if (keyStr == "W") return sf::Keyboard::W;
-    else if (keyStr == "A") return sf::Keyboard::A;
-    else if (keyStr == "S") return sf::Keyboard::S;
+    if (keyStr == "A") return sf::Keyboard::A;
+    else if (keyStr == "B") return sf::Keyboard::B;
+    else if (keyStr == "C") return sf::Keyboard::C;
     else if (keyStr == "D") return sf::Keyboard::D;
+    else if (keyStr == "E") return sf::Keyboard::E;
+    else if (keyStr == "F") return sf::Keyboard::F;
+    else if (keyStr == "G") return sf::Keyboard::G;
+    else if (keyStr == "H") return sf::Keyboard::H;
+    else if (keyStr == "I") return sf::Keyboard::I;
+    else if (keyStr == "J") return sf::Keyboard::J;
+    else if (keyStr == "K") return sf::Keyboard::K;
+    else if (keyStr == "L") return sf::Keyboard::L;
+    else if (keyStr == "M") return sf::Keyboard::M;
+    else if (keyStr == "N") return sf::Keyboard::N;
+    else if (keyStr == "O") return sf::Keyboard::O;
+    else if (keyStr == "P") return sf::Keyboard::P;
+    else if (keyStr == "Q") return sf::Keyboard::Q;
+    else if (keyStr == "R") return sf::Keyboard::R;
+    else if (keyStr == "S") return sf::Keyboard::S;
+    else if (keyStr == "T") return sf::Keyboard::T;
+    else if (keyStr == "U") return sf::Keyboard::U;
+    else if (keyStr == "V") return sf::Keyboard::V;
+    else if (keyStr == "W") return sf::Keyboard::W;
+    else if (keyStr == "X") return sf::Keyboard::X;
+    else if (keyStr == "Y") return sf::Keyboard::Y;
+    else if (keyStr == "Z") return sf::Keyboard::Z;
     else if (keyStr == "Space") return sf::Keyboard::Space;
+    else if (keyStr == "Enter") return sf::Keyboard::Enter;
+    else if (keyStr == "Escape") return sf::Keyboard::Escape;
     else if (keyStr == "Up") return sf::Keyboard::Up;
     else if (keyStr == "Down") return sf::Keyboard::Down;
     else if (keyStr == "Left") return sf::Keyboard::Left;
     else if (keyStr == "Right") return sf::Keyboard::Right;
+    else if (keyStr == "F1") return sf::Keyboard::F1;
+    else if (keyStr == "F2") return sf::Keyboard::F2;
+    else if (keyStr == "F3") return sf::Keyboard::F3;
+    else if (keyStr == "F4") return sf::Keyboard::F4;
+    else if (keyStr == "F5") return sf::Keyboard::F5;
+    else if (keyStr == "F6") return sf::Keyboard::F6;
+    else if (keyStr == "F7") return sf::Keyboard::F7;
+    else if (keyStr == "F8") return sf::Keyboard::F8;
+    else if (keyStr == "F9") return sf::Keyboard::F9;
+    else if (keyStr == "F10") return sf::Keyboard::F10;
+    else if (keyStr == "F11") return sf::Keyboard::F11;
+    else if (keyStr == "F12") return sf::Keyboard::F12;
 
     // Default to Unknown if the key is not recognized
     return sf::Keyboard::Unknown;
