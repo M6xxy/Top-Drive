@@ -4,7 +4,7 @@
 
 #include "../header/CollisionCreator.h"
 
-#include "../cmake-build-debug-coverage/_deps/sfml-src/include/SFML/Graphics/ConvexShape.hpp"
+#include "../cmake-build-debug/_deps/sfml-src/include/SFML/Graphics/ConvexShape.hpp"
 #include "../header/Map.h"
 #include "box2d/b2_body.h"
 #include "box2d/b2_polygon_shape.h"

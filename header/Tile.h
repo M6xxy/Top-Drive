@@ -18,6 +18,7 @@ public:
     std::string name = "Null";
     b2Body* body = nullptr;
     int grip = 0.1f;
+    bool isCheckpoint = false;
 };
 
 

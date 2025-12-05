@@ -64,6 +64,10 @@ add_executable(game
         cpps/UI/Menu.h
         cpps/Scenes/MenuScene.cpp
         cpps/Scenes/MenuScene.h
+        "cpps/Game Conditions/CheckpointHandler.cpp"
+        "cpps/Game Conditions/CheckpointHandler.h"
+        cpps/UI/rpmGauge.cpp
+        cpps/UI/rpmGauge.h
 )
 
 # Include directories

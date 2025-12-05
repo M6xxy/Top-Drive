@@ -47,7 +47,7 @@ private:
 
         tileLibrary.push_back(cornerTop);
 
-        //Tile 3
+        //Tile  4
         Tile cornerLeft;
         cornerLeft.ID = 3;
         cornerLeft.grip = 1.0f;
@@ -55,7 +55,7 @@ private:
 
         tileLibrary.push_back(cornerLeft);
 
-        //Tile 3
+        //Tile 5
         Tile cornerRight;
         cornerRight.ID = 4;
         cornerRight.grip = 1.0f;
@@ -63,13 +63,20 @@ private:
 
         tileLibrary.push_back(cornerRight);
 
-        //Tile 3
+        //Tile 6
         Tile cornerBottom;
         cornerBottom.ID = 5;
         cornerBottom.grip = 1.0f;
         cornerBottom.name = "Corner Bottom Tile";
 
         tileLibrary.push_back(cornerBottom);
+
+        // Tile 7 - Checkpoint
+        Tile checkpoint;
+        checkpoint.ID = 99;
+        checkpoint.name = "Checkpoint Tile";
+        checkpoint.grip = 1.0f;
+        checkpoint.isCheckpoint = true;
     }
 };
 

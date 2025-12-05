@@ -1,11 +1,14 @@
 #include <SFML/Graphics.hpp>
 #include <../../../../header/Movement.h>
 #include <box2d/box2d.h>
+
+#include "cpps/Game Conditions/CheckpointHandler.h"
 #include "header/CarComponents.h"
 #include "header/Car.h"
 #include "header/PlayerCar.h"
 #include "header/LoadSprites.h"
 #include "cpps/Scenes/MenuScene.h"
+#include "cpps/UI/rpmGauge.h"
 #include "header/PhysicsWorld.h"
 #include "header/CollisionCreator.h"
 #include "header/MapEditor.h"
@@ -105,6 +108,9 @@ int main() {
   //Menu
   MenuScene mainMenu(window);
 
+  // RPM Gauge
+  rpmGauge RPMGauge;
+
 
 CarSpec debugCarSpec = makeTestCarSpec();
 
@@ -126,13 +132,13 @@ CarSpec debugCarSpec = makeTestCarSpec();
     {0,0,0,0,0,0,0,0,0,0,0,0},
     {0,1,1,1,1,1,1,1,2,0,0,0},
     {0,1,3,0,0,0,4,1,1,1,0,0},
-    {0,1,1,1,1,1,0,0,5,1,0,0},
+    {0,1,1,99,1,1,0,0,5,1,0,0},
     {0,0,0,0,0,1,0,0,0,1,0,0},
-    {0,1,1,1,0,1,0,0,0,1,0,0},
+    {0,1,99,1,0,1,0,0,0,1,0,0},
     {0,1,5,1,2,1,0,0,0,1,2,0},
     {0,1,0,1,1,1,0,0,0,1,1,0},
     {0,1,0,0,0,0,0,0,0,4,1,0},
-    {0,1,1,1,2,1,1,1,1,2,1,0},
+    {0,1,99,1,2,1,1,1,1,2,99,0},
     {0,0,4,1,1,1,5,5,1,1,1,0},
     {0,0,0,0,0,0,0,0,0,0,0,0}
   };
@@ -148,6 +154,9 @@ CarSpec debugCarSpec = makeTestCarSpec();
   //Create Collsion
   CollisionCreator collisionCreator;
   collisionCreator.createCollision(physics.world(),collisionCreator.tileCollisonVector,testMap);
+
+  //Get Checkpoints
+  CheckpointHandler checkpointHandler(testMap);
 
   //GAME LOOP
   while (window.isOpen()) {
@@ -173,6 +182,9 @@ CarSpec debugCarSpec = makeTestCarSpec();
     physics.step(dt);
     playerCar.syncSpriteFromPhysics();
 
+    // Update RPM gauge
+    RPMGauge.update(playerCar.getCar());
+
     // 4. Render
 
     //Menu
@@ -186,9 +198,13 @@ CarSpec debugCarSpec = makeTestCarSpec();
       //Collision display
       collisionCreator.render(window,collisionCreator.tileInstances);
       playerCar.m_carPhysics.drawDebug(window);
-
       //Player Sprite
       window.draw(playerCar.getSprite());
+      //RPM Gauge
+      RPMGauge.setVisible(true);
+      RPMGauge.draw(window);
+      //Check checkpoints
+      checkpointHandler.checkIfInCheckpoints(playerCar);
 
     }
 
