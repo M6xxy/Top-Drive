@@ -70,6 +70,10 @@ add_executable(game
         cpps/Scenes/SettingsScene.h
         "cpps/Game Conditions/GameState.cpp"
         "cpps/Game Conditions/GameState.h"
+        cpps/UI/rpmGauge.cpp
+        cpps/UI/rpmGauge.h
+        header/AIController.h
+        cpps/AIController.cpp
 )
 
 # Include directories

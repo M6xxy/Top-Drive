@@ -7,9 +7,11 @@
 #include "header/CarComponents.h"
 #include "header/Car.h"
 #include "header/PlayerCar.h"
+#include "header/AIController.h"
 #include "header/LoadSprites.h"
 #include "cpps/Scenes/MenuScene.h"
 #include "cpps/Scenes/SettingsScene.h"
+#include "cpps/UI/rpmGauge.h"
 #include "header/PhysicsWorld.h"
 #include "header/CollisionCreator.h"
 #include "header/MapEditor.h"
@@ -119,6 +121,9 @@ int main() {
   MenuScene mainMenu(window);
   SettingsScene settingsMenu(window,movement);
 
+  // RPM Gauge
+  rpmGauge RPMGauge;
+
 
 CarSpec debugCarSpec = makeTestCarSpec();
 
@@ -158,6 +163,50 @@ CarSpec debugCarSpec = makeTestCarSpec();
       testMap.setTile(track[y][x], x, y);
     }
   }
+
+  constexpr float TILE_SIZE = 64.f;
+
+  auto tileCenter = [TILE_SIZE](int tileX, int tileY) {
+    return sf::Vector2f(tileX * TILE_SIZE + TILE_SIZE * 0.5f, tileY * TILE_SIZE + TILE_SIZE * 0.5f);
+  };
+
+  std::vector<sf::Vector2f> aiPath = {
+    // Top straight, heading right
+    tileCenter(1, 1),
+    tileCenter(5, 1),
+    tileCenter(7, 1),
+
+    // Top-right down to mid-right
+    tileCenter(8, 2),
+    tileCenter(9, 3),
+    tileCenter(9, 5),
+    tileCenter(9, 7),
+    tileCenter(10, 8),
+
+    // Bottom-right and bottom straight
+    tileCenter(10, 9),
+    tileCenter(10, 10),
+    tileCenter(7, 10),
+    tileCenter(3, 10),
+
+    // Bottom-left to mid-left
+    tileCenter(1, 9),
+    tileCenter(1, 6),
+    tileCenter(1, 2),
+
+    // Close the loop back near start
+    tileCenter(1, 1),
+  };
+
+  PlayerCar aiCar(
+     physics,
+     spriteLoader,
+     "../../assets/textures/placeholder-car.png",
+     tileCenter(1, 1),
+     debugCarSpec
+   );
+
+  AIController ai_controller(physics, aiPath, 8.f); // Target speed m/s
 
   //Create Collsion
   CollisionCreator collisionCreator;
@@ -238,11 +287,21 @@ CarSpec debugCarSpec = makeTestCarSpec();
 
     // 3. Movement Intent
     MovementIntent intent = movement.captureInput();
+    MovementIntent aiIntent = ai_controller.update(aiCar.getPhysics(), dt);
 
     // Physics
     playerCar.updatePhysics(intent, dt);
+
+    // AI
+    aiCar.updatePhysics(aiIntent, dt);
+
     physics.step(dt);
+
     playerCar.syncSpriteFromPhysics();
+    aiCar.syncSpriteFromPhysics();
+
+    // Update RPM gauge
+    RPMGauge.update(playerCar.getCar());
 
     // 4. Render
     window.clear();

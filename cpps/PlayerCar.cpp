@@ -39,10 +39,10 @@ void PlayerCar::syncSpriteFromPhysics() {
 
 }
 
-
-
 sf::Sprite& PlayerCar::getSprite() { return m_sprite; }
 Car& PlayerCar::getCar() { return m_carPhysics.getCar(); }
 const Car& PlayerCar::getCar() const { return m_carPhysics.getCar(); }
+CarPhysics& PlayerCar::getPhysics() { return m_carPhysics; }
+const CarPhysics& PlayerCar::getPhysics() const { return m_carPhysics; }
 
 
