@@ -327,7 +327,7 @@ CarSpec debugCarSpec = makeTestCarSpec();
         testMap.render(mapEditor.tileLibrary,window);
         //Collision display
         collisionCreator.render(window,collisionCreator.tileInstances);
-        playerCar.m_carPhysics.drawDebug(window);
+        playerCar.getPhysics().drawDebug(window);
         //Player Sprite
         window.draw(playerCar.getSprite());
         //Check checkpoints
