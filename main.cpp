@@ -173,6 +173,60 @@ CarSpec debugCarSpec = makeTestCarSpec();
     while (window.pollEvent(event)) {
       if (event.type == sf::Event::Closed)
         window.close();
+
+      //Pause Menu
+      if (event.type == sf::Event::KeyPressed) {
+        if (event.key.code == sf::Keyboard::F1) {
+          mainMenu.state = 1;
+          currentState = ::GameState::MAIN_MENU;
+        }
+      }
+
+      //Binding logic
+        if (event.type == sf::Event::KeyPressed) {
+          if (settingsMenu.waitingForForwardKey) {
+            movement.p1Forward = event.key.code;
+            //Save to file
+            settingsMenu.saveKeybinds(movement);
+            //Update Text
+            settingsMenu.menu.setText(1,"Forward : " + movement.keyToString(event.key.code));
+            //end
+            settingsMenu.waitingForForwardKey = false;
+          }
+
+          //Left
+          if (settingsMenu.waitingForLeftKey) {
+            movement.p1Left = event.key.code;
+            //Save to file
+            settingsMenu.saveKeybinds(movement);
+            //Update Text
+            settingsMenu.menu.setText(3,"Left : " + movement.keyToString(event.key.code));
+            //end
+            settingsMenu.waitingForLeftKey = false;
+          }
+
+          //Right
+          if (settingsMenu.waitingForRightKey) {
+            movement.p1Right = event.key.code;
+            //Save to file
+            settingsMenu.saveKeybinds(movement);
+            //Update Text
+            settingsMenu.menu.setText(4,"Right : " + movement.keyToString(event.key.code));
+            //end
+            settingsMenu.waitingForRightKey = false;
+          }
+
+          //Back
+          if (settingsMenu.waitingForBackKey) {
+            movement.p1Back = event.key.code;
+            //Save to file
+            settingsMenu.saveKeybinds(movement);
+            //Update Text
+            settingsMenu.menu.setText(2,"Back : " + movement.keyToString(event.key.code));
+            //end
+            settingsMenu.waitingForBackKey = false;
+          }
+        }
     }
 
     // 2. Delta time
@@ -224,6 +278,7 @@ CarSpec debugCarSpec = makeTestCarSpec();
       case ::GameState::SETTINGS:
         settingsMenu.update(mousePos,mousePressed);
         settingsMenu.draw(window);
+
 
         if (settingsMenu.stateSettings == 0) {
           mainMenu.stateSettings = 0;

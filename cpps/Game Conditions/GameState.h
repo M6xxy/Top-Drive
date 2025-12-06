@@ -10,7 +10,8 @@
 enum class GameState {
     MAIN_MENU,
     GAME,
-    SETTINGS
+    SETTINGS,
+    BINDING
 };
 
 
