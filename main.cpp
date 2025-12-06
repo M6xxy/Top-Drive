@@ -332,6 +332,9 @@ CarSpec debugCarSpec = makeTestCarSpec();
         //Car Sprite
         window.draw(playerCar.getSprite());
         window.draw(aiCar.getSprite());
+        //RPM Gauge
+        RPMGauge.setVisible(true);
+        RPMGauge.draw(window);
         //Check checkpoints
         checkpointHandler.checkIfInCheckpoints(playerCar);
         break;
