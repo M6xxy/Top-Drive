@@ -66,6 +66,10 @@ add_executable(game
         cpps/Scenes/MenuScene.h
         "cpps/Game Conditions/CheckpointHandler.cpp"
         "cpps/Game Conditions/CheckpointHandler.h"
+        cpps/Scenes/SettingsScene.cpp
+        cpps/Scenes/SettingsScene.h
+        "cpps/Game Conditions/GameState.cpp"
+        "cpps/Game Conditions/GameState.h"
         cpps/UI/rpmGauge.cpp
         cpps/UI/rpmGauge.h
         header/AIController.h

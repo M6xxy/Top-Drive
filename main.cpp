@@ -3,17 +3,22 @@
 #include <box2d/box2d.h>
 
 #include "cpps/Game Conditions/CheckpointHandler.h"
+#include "cpps/Game Conditions/GameState.h"
 #include "header/CarComponents.h"
 #include "header/Car.h"
 #include "header/PlayerCar.h"
 #include "header/AIController.h"
 #include "header/LoadSprites.h"
 #include "cpps/Scenes/MenuScene.h"
+#include "cpps/Scenes/SettingsScene.h"
 #include "cpps/UI/rpmGauge.h"
 #include "header/PhysicsWorld.h"
 #include "header/CollisionCreator.h"
 #include "header/MapEditor.h"
 #include "header/Player.h"
+
+GameState currentState = GameState::MAIN_MENU;
+
 
 static CarSpec makeTestCarSpec() {
     CarSpec spec;
@@ -104,10 +109,17 @@ int main() {
   // Create Physics World
   LoadSprites spriteLoader;
   PhysicsWorld physics({0.f, 0.f}, 30.f);
-  Movement movement;
+  Movement movement("../../keybinds.txt");
 
   //Menu
+  enum class GameState {
+    MAIN_MENU,
+    GAME,
+    SETTINGS
+};
+
   MenuScene mainMenu(window);
+  SettingsScene settingsMenu(window,movement);
 
   // RPM Gauge
   rpmGauge RPMGauge;
@@ -210,6 +222,60 @@ CarSpec debugCarSpec = makeTestCarSpec();
     while (window.pollEvent(event)) {
       if (event.type == sf::Event::Closed)
         window.close();
+
+      //Pause Menu
+      if (event.type == sf::Event::KeyPressed) {
+        if (event.key.code == sf::Keyboard::F1) {
+          mainMenu.state = 1;
+          currentState = ::GameState::MAIN_MENU;
+        }
+      }
+
+      //Binding logic
+        if (event.type == sf::Event::KeyPressed) {
+          if (settingsMenu.waitingForForwardKey) {
+            movement.p1Forward = event.key.code;
+            //Save to file
+            settingsMenu.saveKeybinds(movement);
+            //Update Text
+            settingsMenu.menu.setText(1,"Forward : " + movement.keyToString(event.key.code));
+            //end
+            settingsMenu.waitingForForwardKey = false;
+          }
+
+          //Left
+          if (settingsMenu.waitingForLeftKey) {
+            movement.p1Left = event.key.code;
+            //Save to file
+            settingsMenu.saveKeybinds(movement);
+            //Update Text
+            settingsMenu.menu.setText(3,"Left : " + movement.keyToString(event.key.code));
+            //end
+            settingsMenu.waitingForLeftKey = false;
+          }
+
+          //Right
+          if (settingsMenu.waitingForRightKey) {
+            movement.p1Right = event.key.code;
+            //Save to file
+            settingsMenu.saveKeybinds(movement);
+            //Update Text
+            settingsMenu.menu.setText(4,"Right : " + movement.keyToString(event.key.code));
+            //end
+            settingsMenu.waitingForRightKey = false;
+          }
+
+          //Back
+          if (settingsMenu.waitingForBackKey) {
+            movement.p1Back = event.key.code;
+            //Save to file
+            settingsMenu.saveKeybinds(movement);
+            //Update Text
+            settingsMenu.menu.setText(2,"Back : " + movement.keyToString(event.key.code));
+            //end
+            settingsMenu.waitingForBackKey = false;
+          }
+        }
     }
 
     // 2. Delta time
@@ -238,47 +304,46 @@ CarSpec debugCarSpec = makeTestCarSpec();
     RPMGauge.update(playerCar.getCar());
 
     // 4. Render
+    window.clear();
 
-    //Menu
-    if (mainMenu.state == 0) {
-      mainMenu.update(mousePos,mousePressed);
-      window.clear();
-      mainMenu.draw(window);
-    } else {
-      //Map
-      testMap.render(mapEditor.tileLibrary,window);
-      //Collision display
-      collisionCreator.render(window,collisionCreator.tileInstances);
-
-      // Debug draw AI path
-      for (std::size_t i = 0; i < aiPath.size(); ++i) {
-        sf::CircleShape wp(5.f);
-        wp.setFillColor(sf::Color::Yellow);
-        wp.setOrigin(5.f, 5.f);
-        wp.setPosition(aiPath[i]);
-        window.draw(wp);
-
-        if (i + 1 < aiPath.size()) {
-          sf::Vertex line[] = {
-            sf::Vertex(aiPath[i],     sf::Color::Yellow),
-            sf::Vertex(aiPath[i + 1], sf::Color::Yellow)
-        };
-          window.draw(line, 2, sf::Lines);
+    switch (currentState) {
+      case ::GameState::MAIN_MENU:
+        mainMenu.update(mousePos,mousePressed);
+        mainMenu.draw(window);
+        if (mainMenu.state == 2) {
+          std::cout << "SETTING STATE TO GAME";
+          currentState = ::GameState::GAME;
         }
-      }
 
-      playerCar.getPhysics().drawDebug(window);
-      aiCar.getPhysics().drawDebug(window);
-      //Player Sprite
-      window.draw(playerCar.getSprite());
-      // AI sprite
-      window.draw(aiCar.getSprite());
-      //RPM Gauge
-      RPMGauge.setVisible(true);
-      RPMGauge.draw(window);
-      //Check checkpoints
-      checkpointHandler.checkIfInCheckpoints(playerCar);
+        if (mainMenu.stateSettings == 1) {
+          settingsMenu.stateSettings = 1;
+          std::cout << "SETTING STATE TO SETTINGS";
+          currentState = ::GameState::SETTINGS;
+        }
+        break;
 
+      case ::GameState::GAME:
+        //Map
+        testMap.render(mapEditor.tileLibrary,window);
+        //Collision display
+        collisionCreator.render(window,collisionCreator.tileInstances);
+        playerCar.m_carPhysics.drawDebug(window);
+        //Player Sprite
+        window.draw(playerCar.getSprite());
+        //Check checkpoints
+        checkpointHandler.checkIfInCheckpoints(playerCar);
+        break;
+
+      case ::GameState::SETTINGS:
+        settingsMenu.update(mousePos,mousePressed);
+        settingsMenu.draw(window);
+
+
+        if (settingsMenu.stateSettings == 0) {
+          mainMenu.stateSettings = 0;
+          std::cout << "SETTING STATE TO MENU";
+          currentState = ::GameState::MAIN_MENU;
+        }
     }
 
 
