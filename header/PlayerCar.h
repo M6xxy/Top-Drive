@@ -26,12 +26,17 @@ public:
 
     // Helpers
     sf::Sprite& getSprite();
-    Car& getCar();
+
+    Car &getCar();
     const Car& getCar() const;
-    CarPhysics m_carPhysics;
+
+    CarPhysics& getPhysics();
+    const CarPhysics& getPhysics() const;
+
 private:
     PhysicsWorld& m_physics;
     sf::Texture m_texture;
     sf::Sprite m_sprite;
+    CarPhysics m_carPhysics;
 
 };

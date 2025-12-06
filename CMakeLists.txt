@@ -68,6 +68,8 @@ add_executable(game
         "cpps/Game Conditions/CheckpointHandler.h"
         cpps/UI/rpmGauge.cpp
         cpps/UI/rpmGauge.h
+        header/AIController.h
+        cpps/AIController.cpp
 )
 
 # Include directories

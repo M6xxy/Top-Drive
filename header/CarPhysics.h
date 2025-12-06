@@ -20,9 +20,13 @@ public:
     // Update physics for car
     void update(const MovementIntent& intent, float dt);
 
-    b2Body* getBody();
-    const Car& getCar() const;
-    Car& getCar();
+    b2Body* getBody() { return m_body; }
+    const b2Body* getBody() const { return m_body; }
+    Car& getCar() { return m_car; }
+    const Car& getCar() const { return m_car; }
+    PhysicsWorld& getPhysics() { return m_physics; }
+    const PhysicsWorld& getPhysics() const { return m_physics; }
+
 
     void drawDebug(sf::RenderWindow &window);
 private:

@@ -42,10 +42,6 @@ CarPhysics::CarPhysics(PhysicsWorld& physics, const CarSpec &spec, const b2Vec2 
 
 }
 
-b2Body* CarPhysics::getBody() { return m_body; }
-Car& CarPhysics::getCar() { return m_car; }
-const Car& CarPhysics::getCar() const { return m_car; }
-
 void CarPhysics::update(const MovementIntent &intent, float dt) {
     if (!m_body) return;
 

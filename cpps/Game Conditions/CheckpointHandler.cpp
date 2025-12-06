@@ -48,7 +48,7 @@ void CheckpointHandler::checkpointDataSetup() {
 void CheckpointHandler::checkIfInCheckpoints(PlayerCar &car) {
 
     //Get location of car
-    b2Vec2 carPosMeters = car.m_carPhysics.getBody()->GetPosition();
+    b2Vec2 carPosMeters = car.getPhysics().getBody()->GetPosition();
 
     //Convert to pixels
     float pixelPosX = carPosMeters.x * SCALE;
