@@ -12,8 +12,25 @@ struct MovementIntent {
 
 class Movement {
 public:
-    Movement() = default;
+    std::vector<std::pair<std::string, sf::Keyboard::Key>> KeybindVector;
+
+    sf::Keyboard::Key p1Forward;
+    sf::Keyboard::Key p1Left;
+    sf::Keyboard::Key p1Right;
+    sf::Keyboard::Key p1Back;
+    sf::Keyboard::Key p1Handbrake;
+
+    Movement(const std::string& filename) {
+        loadKeyMap(filename); // Load key mappings in const
+    }
+
+    void loadKeyMap(const std::string& filename);
 
     // Reads keyboard inputs and returns user input
     MovementIntent captureInput() const;
+
+    sf::Keyboard::Key stringToKey(const std::string &keyStr) const;
+
+    std::string keyToString(sf::Keyboard::Key key);
+private:
 };

@@ -41,12 +41,15 @@ public:
     void setCallback(std::function<void()> func) { callback = func;}
 
     void update(sf::Vector2f mousePos, bool mousePressed);;
+
+    void setText(std::string text);
 private:
     sf::RectangleShape buttonRect;
     sf::Text buttonText;
     sf::Color defaultColour = sf::Color::Cyan;
     sf::Color hoverColour = sf::Color::Blue;
     std::function<void()> callback;
+    bool isPressed = false;
 };
 
 

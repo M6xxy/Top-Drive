@@ -16,6 +16,9 @@ public:
     void draw(sf::RenderWindow &window);
 
     void update(sf::Vector2f mousePos, bool mousePressed);
+
+    void setText(int pos, std::string text);
+
 private:
     std::vector<Button> buttonList;
 

@@ -21,3 +21,7 @@ void Menu::update(const sf::Vector2f mousePos, bool mousePressed) {
         button.update(mousePos,mousePressed);
     }
 }
+
+void Menu::setText(int pos,std::string text) {
+    buttonList.at(pos).setText(text);
+}

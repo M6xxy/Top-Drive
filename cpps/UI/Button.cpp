@@ -20,7 +20,22 @@ void Button::update(const sf::Vector2f mousePos, bool mousePressed) {
         if (mousePressed && callback) {
             callback();
         }
+        isPressed = true;
+
+       if (!mousePressed && isPressed) {
+           isPressed = false;
+       }
     } else { // Reset colour
         buttonRect.setFillColor(defaultColour);
     }
 }
+
+void Button::setText(std::string text) {
+    buttonText.setString(text);
+
+    // Re-center text
+    sf::FloatRect textRect = buttonText.getLocalBounds();
+    buttonText.setOrigin(textRect.left + textRect.width / 2.0f,
+                         textRect.top  + textRect.height / 2.0f);
+}
+
