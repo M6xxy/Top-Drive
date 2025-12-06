@@ -164,39 +164,45 @@ CarSpec debugCarSpec = makeTestCarSpec();
     }
   }
 
-  constexpr float TILE_SIZE = 64.f;
+  constexpr float TILE_SIZE = 62.5f;
 
   auto tileCenter = [TILE_SIZE](int tileX, int tileY) {
     return sf::Vector2f(tileX * TILE_SIZE + TILE_SIZE * 0.5f, tileY * TILE_SIZE + TILE_SIZE * 0.5f);
   };
 
   std::vector<sf::Vector2f> aiPath = {
-    // Top straight, heading right
     tileCenter(1, 1),
-    tileCenter(5, 1),
-    tileCenter(7, 1),
-
-    // Top-right down to mid-right
-    tileCenter(8, 2),
-    tileCenter(9, 3),
-    tileCenter(9, 5),
-    tileCenter(9, 7),
-    tileCenter(10, 8),
-
-    // Bottom-right and bottom straight
-    tileCenter(10, 9),
-    tileCenter(10, 10),
-    tileCenter(7, 10),
-    tileCenter(3, 10),
-
-    // Bottom-left to mid-left
-    tileCenter(1, 9),
-    tileCenter(1, 6),
     tileCenter(1, 2),
-
-    // Close the loop back near start
+    tileCenter(2, 3),
+    tileCenter(3, 3),
+    tileCenter(4, 3),
+    tileCenter(5, 3),
+    tileCenter(5, 4),
+    tileCenter(5, 5),
+    tileCenter(5, 6),
+    tileCenter(4,7),
+    tileCenter(3,6),
+    tileCenter(3,5),
+    tileCenter(1,5),
+    tileCenter(1,9),
+    tileCenter(2,9),
+    tileCenter(3,9),
+    tileCenter(3,10),
+    tileCenter(5,9),
+    tileCenter(7,9),
+    tileCenter(8, 9),
+    tileCenter(9, 10),
+    tileCenter(10, 9),
+    tileCenter(9, 7),
+    tileCenter(8, 2),
+    tileCenter(7, 2),
+    tileCenter(7, 2),
+    tileCenter(6, 1),
+    tileCenter(5, 1),
     tileCenter(1, 1),
   };
+
+
 
   PlayerCar aiCar(
      physics,
@@ -329,14 +335,30 @@ CarSpec debugCarSpec = makeTestCarSpec();
         collisionCreator.render(window,collisionCreator.tileInstances);
         playerCar.getPhysics().drawDebug(window);
         aiCar.getPhysics().drawDebug(window);
+        // AI Debug Draw
+        for (std::size_t i = 0; i < aiPath.size(); ++i) {
+          // Waypoint as a small yellow dot
+          sf::CircleShape wp(5.f);
+          wp.setFillColor(sf::Color::Yellow);
+          wp.setOrigin(5.f, 5.f);
+          wp.setPosition(aiPath[i]);
+          window.draw(wp);
+
+          // Line to next waypoint
+          if (i + 1 < aiPath.size()) {
+            sf::Vertex line[] = {
+              sf::Vertex(aiPath[i],     sf::Color::Yellow),
+              sf::Vertex(aiPath[i + 1], sf::Color::Yellow)
+          };
+            window.draw(line, 2, sf::Lines);
+          }
+        }
         //Car Sprite
         window.draw(playerCar.getSprite());
         window.draw(aiCar.getSprite());
-        //RPM Gauge
-        RPMGauge.setVisible(true);
-        RPMGauge.draw(window);
         //Check checkpoints
         checkpointHandler.checkIfInCheckpoints(playerCar);
+        checkpointHandler.checkIfInCheckpoints(aiCar);
         break;
 
       case ::GameState::SETTINGS:
