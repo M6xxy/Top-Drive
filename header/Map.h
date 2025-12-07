@@ -8,13 +8,14 @@
 
 #include "Tile.h"
 #include "SFML/Graphics/RenderWindow.hpp"
+#include <SFML/Graphics.hpp>
 
 
 class Map {
 public:
     std::vector<std::vector<int>> mapGrid;
-    int maxHeight = 16;
-    int maxWidth = 16;
+    int maxHeight = 18;
+    int maxWidth = 32;
 
     //Constructor
     Map();
@@ -25,6 +26,14 @@ public:
 
 
 private:
+    sf::Texture track;
+    sf::Sprite trackSprite;
+    sf::Texture bounds;
+    sf::Sprite boundSprite;
+    sf::Texture grass;
+    sf::Sprite grassSprite;
+    sf::Texture checkpoint;
+    sf::Sprite checkpointSprite;
 };
 
 
