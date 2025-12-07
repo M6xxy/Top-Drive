@@ -29,24 +29,24 @@ public:
         }
         //Init Buttons
         //SSettings Button
-        Button playButton("SETTINGS",sf::Vector2f(250,75),sf::Vector2f(300,175),font);
+        Button playButton("SETTINGS",sf::Vector2f(250,75),sf::Vector2f(1920/2 - 125,175),font);
         playButton.setCallback([this]() { ; });
 
-        Button forwardButton("Forward : " + movementRef.keyToString(movementRef.KeybindVector.at(0).second) ,sf::Vector2f(250,50),sf::Vector2f(300,290),font);
+        Button forwardButton("Forward : " + movementRef.keyToString(movementRef.KeybindVector.at(0).second) ,sf::Vector2f(250,50),sf::Vector2f(1920/2 - 125,290),font);
         forwardButton.setCallback([this]() { waitingForForwardKey = true; });
 
-        Button downButton("Down : " + movementRef.keyToString(movementRef.KeybindVector.at(3).second),sf::Vector2f(250,50),sf::Vector2f(300,350),font);
+        Button downButton("Down : " + movementRef.keyToString(movementRef.KeybindVector.at(3).second),sf::Vector2f(250,50),sf::Vector2f(1920/2 - 125,350),font);
         downButton.setCallback([this]() { waitingForBackKey = true; });
 
-        Button LeftButton("Left : "+ movementRef.keyToString(movementRef.KeybindVector.at(1).second),sf::Vector2f(250,50),sf::Vector2f(300,410),font);
+        Button LeftButton("Left : "+ movementRef.keyToString(movementRef.KeybindVector.at(1).second),sf::Vector2f(250,50),sf::Vector2f(1920/2 - 125,410),font);
         LeftButton.setCallback([this]() { waitingForLeftKey = true; });
 
-        Button RightButton("Right : "+ movementRef.keyToString(movementRef.KeybindVector.at(2).second),sf::Vector2f(250,50),sf::Vector2f(300,470),font);
+        Button RightButton("Right : "+ movementRef.keyToString(movementRef.KeybindVector.at(2).second),sf::Vector2f(250,50),sf::Vector2f(1920/2 - 125,470),font);
         RightButton.setCallback([this]() { waitingForRightKey = true; });
 
 
         //Back Button
-        Button backButton("Back",sf::Vector2f(250,75),sf::Vector2f(300,675),font);
+        Button backButton("Back",sf::Vector2f(250,75),sf::Vector2f(1920/2 - 125,675),font);
         backButton.setCallback([this]() { stateSettings = 0;  });
 
 
