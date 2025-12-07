@@ -44,7 +44,7 @@ void SoundController::update(float rpm, float idleRpm, float redline, float thro
     }
 
     // Start playing the sound if not already playing
-    if (m_sound.getStatus() == sf::Sound::Playing) {
+    if (m_sound.getStatus() != sf::Sound::Playing) {
         m_sound.play();
     }
 
