@@ -27,8 +27,8 @@ Player::Player(PhysicsWorld& physics, LoadSprites& loader, const std::string& te
     // Create Box2D Body
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
-    bodyDef.position.Set(m_physics.toMeters(startPosPixels.x), m_physics.toMeters(startPosPixels.y));
-    m_body = m_physics.world().CreateBody(&bodyDef);
+    bodyDef.position.Set(m_physics.toMeters(startPosPixels.x), m_physics.toMeters(startPosPixels.y)); // Set the car at its set starting position
+    m_body = m_physics.world().CreateBody(&bodyDef); // Create the car
 
     // Change shape based on sprite
     b2PolygonShape boxShape;
@@ -47,8 +47,8 @@ Player::Player(PhysicsWorld& physics, LoadSprites& loader, const std::string& te
     fixtureDef.friction = 0.3f;
     m_body->CreateFixture(&fixtureDef);
 
-    m_body->SetLinearDamping(2.0f);
-    m_body->SetAngularDamping(3.0f);
+    m_body->SetLinearDamping(2.0f); // Help slow down the sliding and speed
+    m_body->SetAngularDamping(3.0f); // Help slow down the sliding and speed
 }
 
 void Player::updatePhysics(const MovementIntent &intent) const {
@@ -58,11 +58,11 @@ void Player::updatePhysics(const MovementIntent &intent) const {
 void Player::syncSpriteFromPhysics() {
     if (!m_body) return;
 
-    b2Vec2 pos = m_body->GetPosition();
-    float angle = m_body->GetAngle();
+    b2Vec2 pos = m_body->GetPosition(); // Get the cars current position
+    float angle = m_body->GetAngle(); // Get the cars current angle
 
-    m_sprite.setPosition(m_physics.toPixels(pos.x), m_physics.toPixels(pos.y));
-    m_sprite.setRotation(angle * 180.f / b2_pi);
+    m_sprite.setPosition(m_physics.toPixels(pos.x), m_physics.toPixels(pos.y)); // set the cars position after converting
+    m_sprite.setRotation(angle * 180.f / b2_pi); // Make sure the cars rotated the correct way
 }
 
 sf::Sprite& Player::getSprite() {

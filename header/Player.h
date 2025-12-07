@@ -30,6 +30,7 @@ public:
     //Expose Body for customization
     b2Body* getBody();
 
+    // Draw debug around the players car
     void drawDebug(sf::RenderWindow &window);
 
 private:
