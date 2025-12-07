@@ -34,7 +34,7 @@ void Hud::update(CheckpointHandler &ch, sf::RenderWindow &window) {
         lcurrCheckpoint = ch.currCheckpoint;
     }
 
-    lapText.setString("LAP " + std::to_string(ch.lapCount) + "/10");
+    lapText.setString("LAP " + std::to_string(ch.lapCount) + "/3");
     checkPointText.setString("Checkpoint " + std::to_string(lcurrCheckpoint) + "/" + std::to_string(ch.totalCheckpoints-1));
     window.draw(lapText);
     window.draw(checkPointText);

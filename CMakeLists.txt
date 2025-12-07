@@ -89,6 +89,8 @@ add_executable(game
         cpps/UI/Hud.h
         cpps/Sound/SoundController.cpp
         header/Sound/SoundController.h
+        cpps/Scenes/PostGameScene.cpp
+        cpps/Scenes/PostGameScene.h
 )
 
 # Include directories

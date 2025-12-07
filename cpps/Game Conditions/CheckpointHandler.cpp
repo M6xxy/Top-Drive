@@ -8,6 +8,7 @@
 #include <ostream>
 
 
+#include "GameState.h"
 #include "Map.h"
 #include "PlayerCar.h"
 
@@ -45,7 +46,7 @@ void CheckpointHandler::checkpointDataSetup() {
 
 }
 
-void CheckpointHandler::checkIfInCheckpoints(PlayerCar &car) {
+void CheckpointHandler::checkIfInCheckpoints(PlayerCar &car, GameState &currState) {
 
     //Get location of car
     b2Vec2 carPosMeters = car.getPhysics().getBody()->GetPosition();
@@ -74,6 +75,14 @@ void CheckpointHandler::checkIfInCheckpoints(PlayerCar &car) {
         }
 
         std::cout << "\n Next Checkpoint AT: X" << checkpointList.at(currCheckpoint).x << " Y:" <<  checkpointList.at(currCheckpoint).y;
+    }
+
+    //Win/Lose
+    if (lapCount > 3) {
+        lapCount = 0;
+        currCheckpoint = 0;
+        currState = GameState::POSTGAME;
+
     }
 }
 

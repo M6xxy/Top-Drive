@@ -22,16 +22,16 @@ public:
         }
         //Init Buttons
         //Play Button
-        Button playButton("Play",sf::Vector2f(250,75),sf::Vector2f(300,175),font);
+        Button playButton("Play",sf::Vector2f(250,75),sf::Vector2f(1920/2 - 125,275),font);
         playButton.setCallback([this]() { state = 2; });
 
         //Button Settings
         //Settings Button
-        Button settingsButton("Settings",sf::Vector2f(250,75),sf::Vector2f(300,275),font);
+        Button settingsButton("Settings",sf::Vector2f(250,75),sf::Vector2f(1920/2 - 125,375),font);
         settingsButton.setCallback([this]() { stateSettings = 1; });
 
         //Quit Button
-        Button quitButton("Quit",sf::Vector2f(250,75),sf::Vector2f(300,375),font);
+        Button quitButton("Quit",sf::Vector2f(250,75),sf::Vector2f(1920/2 - 125,475),font);
         quitButton.setCallback([this]() {
             std::cout << "Quit button clicked, exiting...\n";
             exit(0);
