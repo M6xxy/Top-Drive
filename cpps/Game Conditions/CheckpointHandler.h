@@ -6,6 +6,7 @@
 #define CHECKPOINTHANDLER_H
 #include <vector>
 
+#include "GameState.h"
 #include "Map.h"
 #include "PlayerCar.h"
 #include "Tile.h"
@@ -24,7 +25,7 @@ public:
     int lapCount = 0;
     void init(Map &map);
     void reset();
-    void checkIfInCheckpoints(PlayerCar &car);
+    void checkIfInCheckpoints(PlayerCar &car, GameState &currState);
 private:
     void populateCheckpointList(Map &map);
     void addLap();

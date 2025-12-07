@@ -21,7 +21,7 @@
 GameHandler::GameHandler(sf::RenderWindow &window)
   : movement("../../keybinds.txt"),
     mainMenu(window),
-    settingsMenu(window, movement),
+    settingsMenu(window, movement), postGameScene(window),
     ai_controller(nullptr),
     playerCar(
       physics,
@@ -277,12 +277,14 @@ void GameHandler::start(sf::RenderWindow &window, GameState &currentState) {
 
     switch (currentState) {
       case ::GameState::MAIN_MENU:
-
+        postGameScene.exit = 0;
         mainMenu.update(mousePos,mousePressed);
         mainMenu.draw(window);
         if (mainMenu.state == 2) {
           std::cout << "SETTING STATE TO GAME";
+          mainMenu.state = 1;
           currentState = ::GameState::GAME;
+
         }
 
         if (mainMenu.stateSettings == 1) {
@@ -309,7 +311,7 @@ void GameHandler::start(sf::RenderWindow &window, GameState &currentState) {
         hud.display(checkpointHandler,window);
         hud.update(checkpointHandler,window);
         //Check checkpoints
-        checkpointHandler.checkIfInCheckpoints(playerCar);
+        checkpointHandler.checkIfInCheckpoints(playerCar, currentState);
         break;
 
       case ::GameState::SETTINGS:
@@ -322,6 +324,15 @@ void GameHandler::start(sf::RenderWindow &window, GameState &currentState) {
           std::cout << "SETTING STATE TO MENU";
           currentState = ::GameState::MAIN_MENU;
         }
+        break;
+      case ::GameState::POSTGAME:
+        postGameScene.update(mousePos,mousePressed);
+        postGameScene.draw(window);
+
+        if (postGameScene.exit == 1) {
+          currentState = ::GameState::MAIN_MENU;
+        }
+
     }
 
 

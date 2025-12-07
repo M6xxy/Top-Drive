@@ -19,6 +19,7 @@
 #include "PlayerCar.h"
 #include "../Car/CarSpecController.h"
 #include "../Scenes/MenuScene.h"
+#include "../Scenes/PostGameScene.h"
 #include "../Scenes/SettingsScene.h"
 #include "../UI/Hud.h"
 #include "../UI/rpmGauge.h"
@@ -42,6 +43,7 @@ private:
     MenuScene mainMenu;
     SettingsScene settingsMenu;
     rpmGauge RPMGauge;
+    PostGameScene postGameScene;
 
     // runtime/clock
     sf::Clock dt_clock;

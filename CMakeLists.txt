@@ -80,6 +80,8 @@ add_executable(game
         cpps/Car/CarSpecController.h
         cpps/UI/Hud.cpp
         cpps/UI/Hud.h
+        cpps/Scenes/PostGameScene.cpp
+        cpps/Scenes/PostGameScene.h
 )
 
 # Include directories
