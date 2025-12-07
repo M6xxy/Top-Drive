@@ -71,12 +71,21 @@ void CheckpointHandler::checkIfInCheckpoints(PlayerCar &car) {
         }
 
         std::cout << "\n Next Checkpoint AT: X" << checkpointList.at(currCheckpoint).x << " Y:" <<  checkpointList.at(currCheckpoint).y;
-
-
     }
+}
 
+void CheckpointHandler::init(Map &map) {
+        populateCheckpointList(map);
+        checkpointDataSetup();      // set currCheckpoint, lap, etc.
 
+        if (!checkpointList.empty()) {
+            displayCheckpointListDebug();
+        }
+}
 
+void CheckpointHandler::reset() {
+    lapCount = 0;
+    currCheckpoint = 0;
 }
 
 

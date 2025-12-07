@@ -74,6 +74,10 @@ add_executable(game
         cpps/UI/rpmGauge.h
         header/AIController.h
         cpps/AIController.cpp
+        "cpps/Game Conditions/GameHandler.cpp"
+        "cpps/Game Conditions/GameHandler.h"
+        cpps/Car/CarSpecController.cpp
+        cpps/Car/CarSpecController.h
 )
 
 # Include directories

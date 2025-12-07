@@ -17,17 +17,13 @@ struct CheckpointCoords {
 
 class CheckpointHandler {
 public:
+    CheckpointHandler() = default;
     std::vector<CheckpointCoords> checkpointList;
     int currCheckpoint = 0;
     int totalCheckpoints = 0;
     int lapCount = 0;
-
-    //Constrcutor
-    explicit CheckpointHandler(Map &map) {
-        populateCheckpointList(map);
-        displayCheckpointListDebug();
-    }
-
+    void init(Map &map);
+    void reset();
     void checkIfInCheckpoints(PlayerCar &car);
 private:
     void populateCheckpointList(Map &map);

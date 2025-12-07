@@ -16,6 +16,7 @@ struct MovementIntent;
 
 class PlayerCar {
 public:
+    b2Vec2 startingPos;
     PlayerCar(PhysicsWorld& physics, LoadSprites& loader, const std::string& texturePath, const sf::Vector2f& startPosPixels, const CarSpec& spec);
 
     // Update car and box2d every frame
@@ -32,6 +33,9 @@ public:
 
     CarPhysics& getPhysics();
     const CarPhysics& getPhysics() const;
+
+    //Reset start
+    void reset();
 
 private:
     PhysicsWorld& m_physics;

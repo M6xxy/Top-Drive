@@ -7,6 +7,7 @@
 #include "../header/LoadSprites.h"
 #include "../header/CarPhysics.h"
 #include <cmath>
+#include <iostream>
 
 CarPhysics::CarPhysics(PhysicsWorld& physics, const CarSpec &spec, const b2Vec2 &startPosMeters) : m_physics(physics), m_car(spec) {
 

@@ -41,7 +41,6 @@ void rpmGauge::update(const Car &car) {
     float rpm = state.rpm;
     float maxRpm = spec.engine.rpmLimit;
 
-    std::cout << "RPM: " << state.rpm << "\n";
 
     float rpmFraction = (maxRpm > 0.f ? rpm / maxRpm : 0.f);
     if (rpmFraction < 0.f) rpmFraction = 0.f;
