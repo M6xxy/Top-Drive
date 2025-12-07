@@ -78,7 +78,7 @@ void CheckpointHandler::checkIfInCheckpoints(PlayerCar &car, GameState &currStat
     }
 
     //Win/Lose
-    if (lapCount > 1) {
+    if (lapCount > 3) {
         lapCount = 0;
         currCheckpoint = 0;
         currState = GameState::POSTGAME;

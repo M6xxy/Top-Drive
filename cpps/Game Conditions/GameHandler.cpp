@@ -130,6 +130,7 @@ void GameHandler::setup(sf::RenderWindow &window) {
     }
   }
   checkpointHandler.init(testMap);
+  checkpointHandlerAI.init(testMap);
 
   constexpr float TILE_SIZE = 60.f;
 
@@ -191,6 +192,7 @@ void GameHandler::start(sf::RenderWindow &window, GameState &currentState) {
           playerCar.reset();
           aiCar.reset();
           checkpointHandler.reset();
+          checkpointHandlerAI.reset();
         }
       }
 
@@ -279,6 +281,11 @@ void GameHandler::start(sf::RenderWindow &window, GameState &currentState) {
         if (mainMenu.state == 2) {
           std::cout << "SETTING STATE TO GAME";
           mainMenu.state = 1;
+          playerCar.reset();
+          aiCar.reset();
+          checkpointHandler.reset();
+          checkpointHandlerAI.reset();
+          ai_controller->m_currentIndex = 0;
           currentState = ::GameState::GAME;
 
         }
@@ -327,6 +334,8 @@ void GameHandler::start(sf::RenderWindow &window, GameState &currentState) {
         hud.update(checkpointHandler,window);
         //Check checkpoints
         checkpointHandler.checkIfInCheckpoints(playerCar, currentState);
+        checkpointHandlerAI.checkIfInCheckpoints(aiCar,currentState);
+
         break;
 
       case ::GameState::SETTINGS:
@@ -341,6 +350,11 @@ void GameHandler::start(sf::RenderWindow &window, GameState &currentState) {
         }
         break;
       case ::GameState::POSTGAME:
+        if (checkpointHandlerAI.lapCount > checkpointHandler.lapCount) {
+          postGameScene.win();
+        } else {
+          postGameScene.loss();
+        }
         postGameScene.update(mousePos,mousePressed);
         postGameScene.draw(window);
 
