@@ -9,6 +9,7 @@
 #include <SFML/Graphics.hpp>
 #include "CarPhysics.h"
 #include "Movement.h"
+#include "Sound/SoundController.h"
 
 class PhysicsWorld;
 class LoadSprites;
@@ -42,5 +43,6 @@ private:
     sf::Texture m_texture;
     sf::Sprite m_sprite;
     CarPhysics m_carPhysics;
+    SoundController m_soundController;
 
 };

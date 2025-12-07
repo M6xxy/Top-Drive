@@ -80,6 +80,8 @@ add_executable(game
         cpps/Car/CarSpecController.h
         cpps/UI/Hud.cpp
         cpps/UI/Hud.h
+        cpps/Sound/SoundController.cpp
+        header/Sound/SoundController.h
 )
 
 # Include directories
@@ -91,6 +93,7 @@ target_link_libraries(game
         sfml-graphics
         sfml-window
         sfml-system
+        sfml-audio
         box2d
 
 )

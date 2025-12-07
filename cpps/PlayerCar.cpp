@@ -21,6 +21,7 @@ PlayerCar::PlayerCar(PhysicsWorld &physics, LoadSprites &loader, const std::stri
     sf::FloatRect bounds = m_sprite.getGlobalBounds();
     m_sprite.setOrigin(bounds.width * 0.5f, bounds.height * 0.5f); // make sure the sprite is position ontop of the physics bounds correctly
     m_sprite.setScale(0.15f,0.15f); // Set the cars size so the physics is correct
+    m_soundController.init("../../assets/engineSound.mp3");
 
 
 
@@ -28,6 +29,16 @@ PlayerCar::PlayerCar(PhysicsWorld &physics, LoadSprites &loader, const std::stri
 
 void PlayerCar::updatePhysics(const MovementIntent &intent, float dt) {
     m_carPhysics.update(intent, dt);// Update physics based on users intent such as brake etc
+
+    const Car& car = m_carPhysics.getCar();
+    const CarSpec& spec = car.getSpec();
+    const CarState& state = car.getState();
+
+    float rpm = state.rpm;
+    float idleRpm = spec.engine.idleRpm;
+    float redline = spec.engine.rpmLimit;
+    float throttle = intent.throttle;
+    m_soundController.update(rpm, idleRpm, redline, throttle, dt);
 }
 
 void PlayerCar::syncSpriteFromPhysics() {
