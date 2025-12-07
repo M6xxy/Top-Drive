@@ -58,6 +58,7 @@ private:
     CollisionCreator collisionCreator;
     Map testMap;
     CheckpointHandler checkpointHandler;
+    CheckpointHandler checkpointHandlerAI;
     MapEditor mapEditor;
     Hud hud;
 };

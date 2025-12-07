@@ -19,11 +19,11 @@ public:
 
     //Get AI input every frame
     MovementIntent update(const CarPhysics& carPhys, float dt);
-
+    std::size_t m_currentIndex = 0; // Current index value for waypoint
 private:
     PhysicsWorld& m_physics;
     std::vector<b2Vec2> m_waypoints; // Waypoints in meteres from each other
-    std::size_t m_currentIndex = 0; // Current index value for waypoint
+
     float m_targetSpeed; // m/s
 
     b2Vec2 getCurrentWaypoint() const;  // Get current waypoint car is at

@@ -21,12 +21,8 @@ public:
 
         //Top Screen Text
         winLossText.setFont(font);
-        winLossText.setString("YOU WON");
+        winLossText.setString("WINLOSSTEXT");
         //Center
-        sf::FloatRect bounds = winLossText.getLocalBounds();
-        winLossText.setOrigin(bounds.left + bounds.width / 2,
-                      bounds.top  + bounds.height / 2);
-
         winLossText.setPosition(1920/2,300);
 
 
@@ -39,6 +35,10 @@ public:
 
     void draw(sf::RenderWindow &window);
     void update(const sf::Vector2f &mousePos, bool mousePressed);
+    void loss();
+
+    void win();
+
 private:
     sf::Text winLossText;
     Menu menu;
