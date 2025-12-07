@@ -19,32 +19,40 @@
 #include "../UI/rpmGauge.h"
 
 GameHandler::GameHandler(sf::RenderWindow &window)
-    : movement("../../keybinds.txt"),
-      mainMenu(window),
-      settingsMenu(window, movement),
-      ai_controller(nullptr),
-      playerCar(
-          physics,
-          spriteLoader,
-          "../../assets/textures/placeholder-car.png",
-          sf::Vector2f(75.f, 100.f),
-          carSpecController.makeTestCarSpec()
-      ),
-      aiCar(
-          physics,
-          spriteLoader,
-          "../../assets/textures/placeholder-car.png",
-          sf::Vector2f(75.f, 100.f),
-          carSpecController.makeTestCarSpec()
-      )
-{
+  : movement("../../keybinds.txt"),
+    mainMenu(window),
+    settingsMenu(window, movement),
+    ai_controller(nullptr),
+    playerCar(
+      physics,
+      spriteLoader,
+      "../../assets/textures/placeholder-car.png",
+      sf::Vector2f(1100.f, 200.f),
+      carSpecController.makeTestCarSpec()
+    ),
+    aiCar(
+      physics,
+      spriteLoader,
+      "../../assets/textures/placeholder-car.png",
+      sf::Vector2f(1100.f, 230.f),
+      carSpecController.makeTestCarSpec()
+    ) {
 }
 
 
 void GameHandler::setup(sf::RenderWindow &window) {
   //MENU STATE
   int menuState = 0;
+  //CORRECT STARTING
+  float playerStartX = physics.toMeters(1100);
+  float playerStartY = physics.toMeters(200);
 
+  float aiStartX = physics.toMeters(1100);
+  float aiStartY = physics.toMeters(230);
+
+  //Rotate cars
+  playerCar.getPhysics().getBody()->SetTransform({playerStartX,playerStartY},1.55);
+  aiCar.getPhysics().getBody()->SetTransform({aiStartX,aiStartY},1.55);
 
 
   //Limit FPS
@@ -77,25 +85,47 @@ void GameHandler::setup(sf::RenderWindow &window) {
   b2World world(gravity);
 
   //Create Map
-  int track[12][12] = {
-    {0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,1,1,1,1,1,1,1,2,0,0,0},
-    {0,1,3,0,0,0,4,1,1,1,0,0},
-    {0,1,1,99,1,1,0,0,5,1,0,0},
-    {0,0,0,0,0,1,0,0,0,1,0,0},
-    {0,1,99,1,0,1,0,0,0,1,0,0},
-    {0,1,5,1,2,1,0,0,0,1,2,0},
-    {0,1,0,1,1,1,0,0,0,1,1,0},
-    {0,1,0,0,0,0,0,0,0,4,1,0},
-    {0,1,99,1,2,1,1,1,1,2,99,0},
-    {0,0,4,1,1,1,5,5,1,1,1,0},
-    {0,0,0,0,0,0,0,0,0,0,0,0}
+  int track[16][32] = {
+    // Row 0
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+    // Row 1
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+    // Row 2
+    {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0},
+    // Row 3
+    {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,99,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0},
+    // Row 4
+    {0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0},
+    // Row 5
+    {0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0},
+    // Row 6
+    {0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0},
+    // Row 7
+    {0,0,0,0,0,0,99,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0},
+    // Row 8
+    {0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0},
+    // Row 9
+    {0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0},
+    // Row 10
+    {0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0},
+    // Row 11
+    {0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0},
+    // Row 12
+    {0,0,0,1,99,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,99,0,0},
+    // Row 13
+    {0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0},
+    // Row 14
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0},
+    // Row 15
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
   };
 
 
+
+
   // Set tiles in testMap
-  for(int y = 0; y < 12; y++) {
-    for(int x = 0; x < 12; x++) {
+  for(int y = 0; y < 18; y++) {
+    for(int x = 0; x < 32; x++) {
       testMap.setTile(track[y][x], x, y);
     }
   }
@@ -266,7 +296,7 @@ void GameHandler::start(sf::RenderWindow &window, GameState &currentState) {
         //Map
         testMap.render(mapEditor.tileLibrary,window);
         //Collision display
-        collisionCreator.render(window,collisionCreator.tileInstances);
+        //collisionCreator.render(window,collisionCreator.tileInstances);
         playerCar.getPhysics().drawDebug(window);
         aiCar.getPhysics().drawDebug(window);
         //Car Sprite
@@ -275,6 +305,9 @@ void GameHandler::start(sf::RenderWindow &window, GameState &currentState) {
         //RPM Gauge
         RPMGauge.setVisible(true);
         RPMGauge.draw(window);
+        //HUD
+        hud.display(checkpointHandler,window);
+        hud.update(checkpointHandler,window);
         //Check checkpoints
         checkpointHandler.checkIfInCheckpoints(playerCar);
         break;

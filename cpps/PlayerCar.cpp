@@ -53,7 +53,7 @@ CarPhysics& PlayerCar::getPhysics() { return m_carPhysics; }
 const CarPhysics& PlayerCar::getPhysics() const { return m_carPhysics; }
 
 void PlayerCar::reset() {
-    m_carPhysics.getBody()->SetTransform(startingPos,0);
+    m_carPhysics.getBody()->SetTransform(startingPos,1.55);
 }
 
 

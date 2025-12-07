@@ -78,6 +78,8 @@ add_executable(game
         "cpps/Game Conditions/GameHandler.h"
         cpps/Car/CarSpecController.cpp
         cpps/Car/CarSpecController.h
+        cpps/UI/Hud.cpp
+        cpps/UI/Hud.h
 )
 
 # Include directories
