@@ -131,42 +131,38 @@ void GameHandler::setup(sf::RenderWindow &window) {
   }
   checkpointHandler.init(testMap);
 
-  constexpr float TILE_SIZE = 64.f;
+  constexpr float TILE_SIZE = 60.f;
 
   auto tileCenter = [TILE_SIZE](int tileX, int tileY) {
     return sf::Vector2f(tileX * TILE_SIZE + TILE_SIZE * 0.5f, tileY * TILE_SIZE + TILE_SIZE * 0.5f);
   };
 
+  // TileX and TileY represent the map positions of waypoints for the ai to follow / Each map would have its own set
    aiPath = {
-    // Top straight, heading right
-    tileCenter(1, 1),
-    tileCenter(5, 1),
-    tileCenter(7, 1),
-
-    // Top-right down to mid-right
-    tileCenter(8, 2),
-    tileCenter(9, 3),
-    tileCenter(9, 5),
-    tileCenter(9, 7),
-    tileCenter(10, 8),
-
-    // Bottom-right and bottom straight
-    tileCenter(10, 9),
-    tileCenter(10, 10),
-    tileCenter(7, 10),
-    tileCenter(3, 10),
-
-    // Bottom-left to mid-left
-    tileCenter(1, 9),
-    tileCenter(1, 6),
-    tileCenter(1, 2),
-
-    // Close the loop back near start
-    tileCenter(1, 1),
+    tileCenter(15, 3), // Start Position
+    tileCenter(8, 3),
+    tileCenter(2, 2),
+    tileCenter(1, 5),
+    tileCenter(3, 5),
+    tileCenter(6, 6),
+    tileCenter(6, 8),
+    tileCenter(3, 8),
+    tileCenter(3, 12),
+    tileCenter(5, 12),
+    tileCenter(8, 13),
+    tileCenter(24, 13),
+    tileCenter(27, 14),
+    tileCenter(29, 13),
+    tileCenter(29, 10),
+    tileCenter(26, 10),
+    tileCenter(26, 8),
+    tileCenter(29, 8),
+    tileCenter(29, 3),
+    tileCenter(15, 3), // Return to start
   };
 
 
-  ai_controller = std::make_unique<AIController>(physics, aiPath, 8.f);
+  ai_controller = std::make_unique<AIController>(physics, aiPath, 11.f);
 
 
   //Create Collsion
@@ -305,6 +301,25 @@ void GameHandler::start(sf::RenderWindow &window, GameState &currentState) {
         //RPM Gauge
         RPMGauge.setVisible(true);
         RPMGauge.draw(window);
+
+        for (std::size_t i = 0; i < aiPath.size(); ++i) {
+
+          // Draw waypoint as a yellow dot
+          sf::CircleShape wp(5.f);
+          wp.setFillColor(sf::Color::Yellow);
+          wp.setOrigin(5.f, 5.f);
+          wp.setPosition(aiPath[i]);
+          window.draw(wp);
+
+          // Draw a line to the next waypoint
+          if (i + 1 < aiPath.size()) {
+            sf::Vertex line[] = {
+              sf::Vertex(aiPath[i],     sf::Color::Yellow),
+              sf::Vertex(aiPath[i + 1], sf::Color::Yellow)
+          };
+            window.draw(line, 2, sf::Lines);
+          }
+        }
         //HUD
         hud.display(checkpointHandler,window);
         hud.update(checkpointHandler,window);
