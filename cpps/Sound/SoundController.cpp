@@ -35,7 +35,7 @@ void SoundController::setEnabled(bool enabled) {
 void SoundController::update(float rpm, float idleRpm, float redline, float throttle, float dt) {
     if (!m_loaded || !m_enabled) return; // If sound isnt enabled or loaded dont update
 
-    //silence rpm if below 800 rpm
+    //silence rpm if below 400 rpm
     if (rpm < m_minRpmToActivate) {
         if (m_sound.getStatus() == sf::Sound::Playing) {
             m_sound.stop();
@@ -75,6 +75,7 @@ void SoundController::update(float rpm, float idleRpm, float redline, float thro
     m_sound.setVolume(volume);
 
 }
+
 
 
 

@@ -21,6 +21,10 @@ public:
     // throttle = Is the user on the throttle
     void update(float rpm, float idleRpm, float redline, float throttle, float dt);
 
+    float getVolume() const {
+        return m_sound.getVolume();
+    }
+
     void setEnabled(bool enabled);
     bool isEnabled() const { return m_enabled; }
 
@@ -30,5 +34,5 @@ private:
     bool m_enabled = true; // Enable the sound
     bool m_loaded = false; // This will be set in the handler so we can modify it in the future for diffrent cars / electric etc
 
-    const float m_minRpmToActivate = 800.f; // No sound when rpm is below the set value
+    const float m_minRpmToActivate = 955.f; // No sound when rpm is below the set value
 };

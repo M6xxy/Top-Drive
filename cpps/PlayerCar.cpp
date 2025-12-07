@@ -11,9 +11,9 @@
 
 PlayerCar::PlayerCar(PhysicsWorld &physics, LoadSprites &loader, const std::string &texturePath,
                      const sf::Vector2f& startPosPixels,
-                     const CarSpec &spec) : m_physics(physics),
+                     const CarSpec &spec, bool enableSound) : m_physics(physics),
                     m_carPhysics(physics, spec, b2Vec2(physics.toMeters(startPosPixels.x), physics.toMeters(startPosPixels.y))),
-                    startingPos(physics.toMeters(startPosPixels.x), physics.toMeters(startPosPixels.y))
+                    startingPos(physics.toMeters(startPosPixels.x), physics.toMeters(startPosPixels.y)), m_enableSound(enableSound)
 {
     loader.Load(m_sprite, m_texture, texturePath); // Pass sprite to loader to texture
     m_sprite.setPosition(startPosPixels); // Set initial position of players car
@@ -21,10 +21,9 @@ PlayerCar::PlayerCar(PhysicsWorld &physics, LoadSprites &loader, const std::stri
     sf::FloatRect bounds = m_sprite.getGlobalBounds();
     m_sprite.setOrigin(bounds.width * 0.5f, bounds.height * 0.5f); // make sure the sprite is position ontop of the physics bounds correctly
     m_sprite.setScale(0.15f,0.15f); // Set the cars size so the physics is correct
-    m_soundController.init("../../assets/engineSound.mp3");
-
-
-
+    if (m_enableSound) {
+        m_soundController.init("../../assets/engineSound.mp3");
+    }
 }
 
 void PlayerCar::updatePhysics(const MovementIntent &intent, float dt) {
