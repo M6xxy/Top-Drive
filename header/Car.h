@@ -9,11 +9,6 @@
 struct CarState {
     float rpm = 1000.f; // Engines RPM
     float gear = 1; // 1 = First gear, 0 = neutral, -1 = reverse
-    float clutch = 1.f; // 1 = fully engaged, 0 = disengaged
-    float engineTemp = 90.f;
-    float brakeTempF = 40.f; // Front Brake Temp
-    float brakeTempR = 40.f; // Rear Brake Temp
-    float tyreWear = 0.f;
 };
 
 class Car {

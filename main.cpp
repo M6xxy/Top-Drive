@@ -22,7 +22,7 @@ GameState currentState = GameState::MAIN_MENU;
 
 static CarSpec makeTestCarSpec() {
     CarSpec spec;
-    spec.name = "Test Car";
+    spec.name = "Toyota";
 
     // ENGINE
     spec.engine.name        = "2.0 NA";
@@ -50,40 +50,12 @@ static CarSpec makeTestCarSpec() {
     // CHASSIS
     spec.chassis.name            = "Lightweight";
     spec.chassis.massKg          = 950.f;
-    spec.chassis.wheelBase      = 2.5f;
-    spec.chassis.trackFront     = 1.5f;
-    spec.chassis.trackRear      = 1.5f;
-    spec.chassis.cogHeight      = 0.45f;
-    spec.chassis.weightDistFront = 0.55f;
-
-    // SUSPENSION (placeholder)
-    spec.suspension.name            = "Sport";
-    spec.suspension.springRateFront = 30000.f;
-    spec.suspension.springRateRear  = 28000.f;
-    spec.suspension.damperFront     = 3000.f;
-    spec.suspension.damperRear      = 2800.f;
-    spec.suspension.rideHeightFront = 0.12f;
-    spec.suspension.rideHeightRear  = 0.13f;
-    spec.suspension.camberFront     = -1.5f;
-    spec.suspension.camberRear      = -1.0f;
-    spec.suspension.toeFront        = 0.1f;
-    spec.suspension.toeRear         = 0.0f;
-
-    // TYRES
-    spec.tyre.name        = "Street Tyres";
-    spec.tyre.grip        = 1.0f;
-    spec.tyre.wearRate    = 0.01f;
-    spec.tyre.tempOptimal = 80.f;
-    spec.tyre.tempRange   = 40.f;
 
     // TRANSMISSION
     spec.transmission.name            = "6-speed FWD";
     spec.transmission.numGears        = 6;
-    spec.transmission.automatic       = false;
     spec.transmission.finalDriveRatio = 4.1f;
     spec.transmission.gearRatios      = {3.3f, 2.1f, 1.5f, 1.2f, 1.0f, 0.8f};
-    spec.transmission.awdFrontTorqueSplit   = 0.5f;          // not used for FWD
-    spec.transmission.driveType       = DriveType::FWD;
 
     return spec;
 }
@@ -164,12 +136,13 @@ CarSpec debugCarSpec = makeTestCarSpec();
     }
   }
 
-  constexpr float TILE_SIZE = 62.5f;
+  constexpr float TILE_SIZE = 62.5f; // Size of tile for scaling of waypoint
 
-  auto tileCenter = [TILE_SIZE](int tileX, int tileY) {
+  auto tileCenter = [TILE_SIZE](int tileX, int tileY) { // Get center of the tile based on tile size
     return sf::Vector2f(tileX * TILE_SIZE + TILE_SIZE * 0.5f, tileY * TILE_SIZE + TILE_SIZE * 0.5f);
   };
 
+  // AI PATH (X, Y) for location of waypoints etc
   std::vector<sf::Vector2f> aiPath = {
     tileCenter(1, 1),
     tileCenter(1, 2),
@@ -194,6 +167,7 @@ CarSpec debugCarSpec = makeTestCarSpec();
     tileCenter(9, 10),
     tileCenter(10, 9),
     tileCenter(9, 7),
+    tileCenter(9, 5),
     tileCenter(8, 2),
     tileCenter(7, 2),
     tileCenter(7, 2),
@@ -208,11 +182,11 @@ CarSpec debugCarSpec = makeTestCarSpec();
      physics,
      spriteLoader,
      "../../assets/textures/placeholder-car.png",
-     tileCenter(1, 1),
+     tileCenter(1, 1), // AI Car spawn point
      debugCarSpec
    );
 
-  AIController ai_controller(physics, aiPath, 8.f); // Target speed m/s
+  AIController ai_controller(physics, aiPath, 5.f); // Target speed m/s
 
   //Create Collsion
   CollisionCreator collisionCreator;
@@ -356,6 +330,9 @@ CarSpec debugCarSpec = makeTestCarSpec();
         //Car Sprite
         window.draw(playerCar.getSprite());
         window.draw(aiCar.getSprite());
+        //RPM Gauge
+        RPMGauge.setVisible(true); // Set the RPM gauge to visable
+        RPMGauge.draw(window); // Draw the rpm guage on the screen
         //Check checkpoints
         checkpointHandler.checkIfInCheckpoints(playerCar);
         checkpointHandler.checkIfInCheckpoints(aiCar);

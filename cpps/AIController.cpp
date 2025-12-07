@@ -25,7 +25,7 @@ b2Vec2 AIController::getCurrentWaypoint() const {
 void AIController::advanceWaypointIfClose(const b2Vec2& carPos) {
     b2Vec2 currentWaypoint = getCurrentWaypoint(); // Current AI checkpoint it is driving too
     b2Vec2 diffrence = currentWaypoint - carPos; // Diffrence  between cars position and the checkpoints position
-    float distance = diffrence.LengthSquared();
+    float distance = diffrence.LengthSquared(); // distance from it
 
     const float radius = 2.f; // Meters
     if (distance < radius * radius) {
@@ -71,11 +71,11 @@ MovementIntent AIController::update(const CarPhysics& carPhys, float dt) {
 
     intent.steer = std::clamp(angleDiff * steerGain, -maxSteer, maxSteer);
 
-    // Speed controll of the car
+    // Speed control of the car
     float speed = vel.Length(); // m/s
     float speedError = m_targetSpeed - speed;
 
-    const float accelGain = 0.05f; // How fast the car accelerates (USE THIS AND THE OTHER VARIABLES TO ADJUST DIFFICULTY)
+    const float accelGain = 0.05f; // How fast the car accelerates
     float throttleCmd = speedError * accelGain;
 
     if (throttleCmd > 0.f) {
@@ -87,7 +87,7 @@ MovementIntent AIController::update(const CarPhysics& carPhys, float dt) {
         intent.throttle = -brake;
     }
 
-    intent.handbrake = false;
+    intent.handbrake = false; // Make sure they cant use the handbrake
 
     return intent;
 }

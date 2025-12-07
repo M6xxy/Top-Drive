@@ -14,6 +14,7 @@ public:
 
     void step(float dt);
 
+    // Apply the users movement intent such as forwards or brake etc
     static void applyMovementIntent(b2Body* body, const MovementIntent& intent, float maxSpeedMetersPerSec);
 
     // Unprocessed world access for map editing
