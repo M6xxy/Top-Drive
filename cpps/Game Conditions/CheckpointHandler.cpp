@@ -66,6 +66,9 @@ void CheckpointHandler::checkIfInCheckpoints(PlayerCar &car) {
         //Check if checkpoint overflow
         if (currCheckpoint >= this->checkpointList.size()) {
             currCheckpoint = 0;
+        }
+
+        if (currCheckpoint == 1) {
             lapCount++;
             std::cout << "LAP FINISHED CURR LAP: " << lapCount;
         }

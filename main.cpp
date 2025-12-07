@@ -25,7 +25,7 @@ GameState currentState = GameState::MAIN_MENU;
 int main() {
 
   //Create Window
-  sf::RenderWindow window(sf::VideoMode({800, 800}), "SFML works!");
+  sf::RenderWindow window(sf::VideoMode({1920, 1080}), "SFML works!");
   //Game Handler
   GameHandler game(window);
 
