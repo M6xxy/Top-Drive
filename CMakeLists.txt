@@ -8,6 +8,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Fetch Content
 include(FetchContent)
 
+set(SFML_BUILD_AUDIO ON)
+set(SFML_BUILD_SHARED_LIBS ON)
+set(BUILD_SHARED_LIBS ON)
+
+
 # Setup Directories
 set(OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIRECTORY})
@@ -25,6 +30,8 @@ FetchContent_Declare(
         GIT_REPOSITORY https://github.com/erincatto/box2d.git
         GIT_TAG v2.4.1
 )
+
+
 
 FetchContent_MakeAvailable(box2d SFML)
 
@@ -80,6 +87,8 @@ add_executable(game
         cpps/Car/CarSpecController.h
         cpps/UI/Hud.cpp
         cpps/UI/Hud.h
+        cpps/Sound/SoundController.cpp
+        header/Sound/SoundController.h
         cpps/Scenes/PostGameScene.cpp
         cpps/Scenes/PostGameScene.h
 )
@@ -93,6 +102,23 @@ target_link_libraries(game
         sfml-graphics
         sfml-window
         sfml-system
+        sfml-audio
         box2d
 
 )
+if (WIN32)
+    # Copy SFML runtime DLLs
+    add_custom_command(TARGET game POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            $<TARGET_RUNTIME_DLLS:game> ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+            COMMAND_EXPAND_LISTS
+    )
+
+    # Copy external SFML
+    add_custom_command(TARGET game POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${sfml_SOURCE_DIR}/extlibs/bin/x64
+            ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+    )
+endif()
+

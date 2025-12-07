@@ -28,14 +28,16 @@ GameHandler::GameHandler(sf::RenderWindow &window)
       spriteLoader,
       "../../assets/textures/placeholder-car.png",
       sf::Vector2f(1100.f, 200.f),
-      carSpecController.makeTestCarSpec()
+      carSpecController.makeTestCarSpec(),
+      true
     ),
     aiCar(
       physics,
       spriteLoader,
       "../../assets/textures/placeholder-car.png",
       sf::Vector2f(1100.f, 230.f),
-      carSpecController.makeTestCarSpec()
+      carSpecController.makeTestCarSpec(),
+      false
     ) {
 }
 

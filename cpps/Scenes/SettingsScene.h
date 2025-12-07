@@ -9,6 +9,7 @@
 #include "Movement.h"
 #include "../UI/Menu.h"
 #include "SFML/Graphics/RenderWindow.hpp"
+#include "Sound/SoundController.h"
 
 
 class Movement;
@@ -21,11 +22,10 @@ public:
     bool waitingForRightKey = false;
     bool waitingForBackKey = false;
 
-    SettingsScene(sf::RenderWindow& window, Movement& movementRef) {
+    SettingsScene(sf::RenderWindow& window, Movement& movementRef){
         //Load Font
         if (!font.loadFromFile("../../assets/ARIAL.TTF")) {
             std::cerr << "ERROR: FAILED TO LOAD FONT";
-
         }
         //Init Buttons
         //SSettings Button
@@ -44,7 +44,6 @@ public:
         Button RightButton("Right : "+ movementRef.keyToString(movementRef.KeybindVector.at(2).second),sf::Vector2f(250,50),sf::Vector2f(1920/2 - 125,470),font);
         RightButton.setCallback([this]() { waitingForRightKey = true; });
 
-
         //Back Button
         Button backButton("Back",sf::Vector2f(250,75),sf::Vector2f(1920/2 - 125,675),font);
         backButton.setCallback([this]() { stateSettings = 0;  });
@@ -57,8 +56,8 @@ public:
         menu.addButton(LeftButton);
         menu.addButton(RightButton);
         menu.addButton(backButton);
-
     }
+
     void draw(sf::RenderWindow &window);
     sf::Keyboard::Key getKeyPressed(sf::Event &event);
 
