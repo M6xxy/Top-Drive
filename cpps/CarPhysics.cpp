@@ -77,8 +77,6 @@ void CarPhysics::update(const MovementIntent &intent, float dt) {
     } else if (throttle < 0.f) {
         if (forwardSpeed > 1.f) {
             brake = -throttle;
-        } else {
-            reverse = -throttle;
         }
     }
 
