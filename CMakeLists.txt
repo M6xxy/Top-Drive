@@ -91,6 +91,8 @@ add_executable(game
         header/Sound/SoundController.h
         cpps/Scenes/PostGameScene.cpp
         cpps/Scenes/PostGameScene.h
+        cpps/Global/Global.cpp
+        cpps/Global/Global.h
 )
 
 # Include directories

@@ -23,11 +23,11 @@ GameState currentState = GameState::MAIN_MENU;
 
 
 int main() {
-
+  Global globalClass;
   //Create Window
-  sf::RenderWindow window(sf::VideoMode({1920, 1080}), "SFML works!");
+  sf::RenderWindow window(sf::VideoMode({globalClass.resX, globalClass.resY}), "SFML works!");
   //Game Handler
-  GameHandler game(window);
+  GameHandler game(window,globalClass);
 
   //Setup Game
   game.setup(window);
