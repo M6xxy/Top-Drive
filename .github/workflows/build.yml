@@ -23,7 +23,9 @@ jobs:
             cmake ninja-build g++ \
             libx11-dev libxrandr-dev libudev-dev \
             libfreetype6-dev libgl1-mesa-dev \
-            libopenal-dev libvorbis-dev libflac-dev
+            libopenal-dev libvorbis-dev libflac-dev \
+            libxinerama-dev
+
 
       - name: Configure CMake
         run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
