@@ -18,6 +18,7 @@
 #include "Movement.h"
 #include "PlayerCar.h"
 #include "../Car/CarSpecController.h"
+#include "../Global/Global.h"
 #include "../Scenes/MenuScene.h"
 #include "../Scenes/PostGameScene.h"
 #include "../Scenes/SettingsScene.h"
@@ -26,12 +27,20 @@
 
 class GameHandler {
 public:
-    GameHandler(sf::RenderWindow &window);
+    Global&  globalClass;
+    GameHandler(sf::RenderWindow &window,Global& gv);
     void setup(sf::RenderWindow &window);
+
+    void aiDebugView(sf::RenderWindow &window);
+
     void start(sf::RenderWindow &window, GameState &currentState);
 
 private:
     // Core dependencies
+
+    b2Vec2 playerPos;
+    sf::View view;
+    sf::Vector2f playerPosMeter;
     Movement movement;
     LoadSprites spriteLoader;
     PhysicsWorld physics;
@@ -61,6 +70,7 @@ private:
     CheckpointHandler checkpointHandlerAI;
     MapEditor mapEditor;
     Hud hud;
+
 };
 
 #endif //GAMEHANDLER_H

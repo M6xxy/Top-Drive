@@ -18,10 +18,10 @@
 #include "../Scenes/SettingsScene.h"
 #include "../UI/rpmGauge.h"
 
-GameHandler::GameHandler(sf::RenderWindow &window)
-  : movement("../../keybinds.txt"),
-    mainMenu(window),
-    settingsMenu(window, movement), postGameScene(window),
+GameHandler::GameHandler(sf::RenderWindow &window, Global &gv)
+  : globalClass(gv), movement("../../keybinds.txt"),
+    mainMenu(window,gv),
+    settingsMenu(window, movement,globalClass), postGameScene(window,gv),
     ai_controller(nullptr),
     playerCar(
       physics,
@@ -73,8 +73,8 @@ void GameHandler::setup(sf::RenderWindow &window) {
     SETTINGS
 };
 
-  MenuScene mainMenu(window);
-  SettingsScene settingsMenu(window,movement);
+  MenuScene mainMenu(window,globalClass);
+  SettingsScene settingsMenu(window,movement,globalClass);
 
   // RPM Gauge
   rpmGauge RPMGauge;
@@ -147,6 +147,7 @@ void GameHandler::setup(sf::RenderWindow &window) {
     tileCenter(2, 2),
     tileCenter(1, 5),
     tileCenter(3, 5),
+     tileCenter(4,6),
     tileCenter(6, 6),
     tileCenter(6, 8),
     tileCenter(3, 8),
@@ -172,10 +173,40 @@ void GameHandler::setup(sf::RenderWindow &window) {
 
   collisionCreator.createCollision(physics.world(), collisionCreator.tileCollisonVector, testMap);
 
-  //Get Checkpoints
+  //View
+  float meterX = physics.toPixels(playerPos.x);
+  float meterY = physics.toPixels(playerPos.y);
+  playerPosMeter = {meterX,meterY};
+
+  //If res < 1920x1080 camera follow player
+  if (globalClass.resX < 1920 && globalClass.resY < 1080) {
+    playerPos = playerCar.getPhysics().getBody()->GetPosition();
+    view.reset(sf::FloatRect(0,0,globalClass.resX,globalClass.resY));
+    window.setView(view);
+  }
 
 
+}
 
+void GameHandler::aiDebugView(sf::RenderWindow &window) {
+  for (std::size_t i = 0; i < aiPath.size(); ++i) {
+
+    // Draw waypoint as a yellow dot
+    sf::CircleShape wp(5.f);
+    wp.setFillColor(sf::Color::Yellow);
+    wp.setOrigin(5.f, 5.f);
+    wp.setPosition(aiPath[i]);
+    window.draw(wp);
+
+    // Draw a line to the next waypoint
+    if (i + 1 < aiPath.size()) {
+      sf::Vertex line[] = {
+        sf::Vertex(aiPath[i],     sf::Color::Yellow),
+        sf::Vertex(aiPath[i + 1], sf::Color::Yellow)
+      };
+      window.draw(line, 2, sf::Lines);
+    }
+  }
 }
 
 void GameHandler::start(sf::RenderWindow &window, GameState &currentState) {
@@ -188,6 +219,7 @@ void GameHandler::start(sf::RenderWindow &window, GameState &currentState) {
       //Pause Menu
       if (event.type == sf::Event::KeyPressed) {
         if (event.key.code == sf::Keyboard::F1) {
+          window.setView(window.getDefaultView());
           mainMenu.state = 1;
           currentState = ::GameState::MAIN_MENU;
           //Reset Race
@@ -277,6 +309,7 @@ void GameHandler::start(sf::RenderWindow &window, GameState &currentState) {
 
     switch (currentState) {
       case ::GameState::MAIN_MENU:
+        window.setView(window.getDefaultView());
         postGameScene.exit = 0;
         mainMenu.update(mousePos,mousePressed);
         mainMenu.draw(window);
@@ -300,6 +333,19 @@ void GameHandler::start(sf::RenderWindow &window, GameState &currentState) {
         break;
 
       case ::GameState::GAME:
+        //Center View
+        if (globalClass.resX < 1920 && globalClass.resY < 1080) {
+          //Get pos to pixel
+          b2Vec2 posMeters = playerCar.getPhysics().getBody()->GetPosition();
+          playerPosMeter.x = physics.toPixels(posMeters.x);
+          playerPosMeter.y = physics.toPixels(posMeters.y);
+
+          view.setCenter(playerPosMeter);
+          window.setView(view);
+        } else {
+          window.setView(window.getDefaultView());
+        }
+
         //Map
         testMap.render(mapEditor.tileLibrary,window);
         //Collision display
@@ -309,38 +355,27 @@ void GameHandler::start(sf::RenderWindow &window, GameState &currentState) {
         //Car Sprite
         window.draw(playerCar.getSprite());
         window.draw(aiCar.getSprite());
+        //AI DEBUG
+        aiDebugView(window);
+
+        // Display HUD ----------------------------------------------------------
+        window.setView(window.getDefaultView());
+
         //RPM Gauge
         RPMGauge.setVisible(true);
         RPMGauge.draw(window);
 
-        for (std::size_t i = 0; i < aiPath.size(); ++i) {
 
-          // Draw waypoint as a yellow dot
-          sf::CircleShape wp(5.f);
-          wp.setFillColor(sf::Color::Yellow);
-          wp.setOrigin(5.f, 5.f);
-          wp.setPosition(aiPath[i]);
-          window.draw(wp);
-
-          // Draw a line to the next waypoint
-          if (i + 1 < aiPath.size()) {
-            sf::Vertex line[] = {
-              sf::Vertex(aiPath[i],     sf::Color::Yellow),
-              sf::Vertex(aiPath[i + 1], sf::Color::Yellow)
-          };
-            window.draw(line, 2, sf::Lines);
-          }
-        }
         //HUD
         hud.display(checkpointHandler,window);
         hud.update(checkpointHandler,window);
         //Check checkpoints
         checkpointHandler.checkIfInCheckpoints(playerCar, currentState);
         checkpointHandlerAI.checkIfInCheckpoints(aiCar,currentState);
-
         break;
 
       case ::GameState::SETTINGS:
+        window.setView(window.getDefaultView());
         settingsMenu.update(mousePos,mousePressed);
         settingsMenu.draw(window);
 
@@ -352,6 +387,7 @@ void GameHandler::start(sf::RenderWindow &window, GameState &currentState) {
         }
         break;
       case ::GameState::POSTGAME:
+        window.setView(window.getDefaultView());
         if (checkpointHandlerAI.lapCount > checkpointHandler.lapCount) {
           postGameScene.win();
         } else {

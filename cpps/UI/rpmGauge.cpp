@@ -18,7 +18,7 @@ rpmGauge::rpmGauge() {
 
     m_rpmText.setFont(m_font);
     m_rpmText.setCharacterSize(24);
-    m_rpmText.setFillColor(sf::Color::Black);
+    m_rpmText.setFillColor(sf::Color::White);
     m_rpmText.setString("RPM: 0");
 
     //Background

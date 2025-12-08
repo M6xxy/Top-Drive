@@ -1,4 +1,4 @@
 p1Forward: W
-p1Left: A
+p1Left: W
 p1Right: D
 p1Back: S
