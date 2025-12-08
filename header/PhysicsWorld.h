@@ -10,10 +10,11 @@ struct MovementIntent;
 
 class PhysicsWorld {
 public:
-    explicit PhysicsWorld(const b2Vec2& gravity = {0.f, 9.8f}, float scale = 30.f);
+    explicit PhysicsWorld(const b2Vec2& gravity = {0.f, 0.f}, float scale = 30.f);
 
     void step(float dt);
 
+    // Apply the users movement intent such as forwards or brake etc
     static void applyMovementIntent(b2Body* body, const MovementIntent& intent, float maxSpeedMetersPerSec);
 
     // Unprocessed world access for map editing

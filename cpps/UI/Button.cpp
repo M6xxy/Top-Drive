@@ -12,21 +12,26 @@ void Button::draw(sf::RenderWindow &window) {
 }
 
 void Button::update(const sf::Vector2f mousePos, bool mousePressed) {
-    //If mouse is in bounds
+    // Check if mouse is over the button
     if (buttonRect.getGlobalBounds().contains(mousePos)) {
-        //Change colour on hover
         buttonRect.setFillColor(hoverColour);
-        //If function exists run on click
-        if (mousePressed && callback) {
-            callback();
-        }
-        isPressed = true;
 
-       if (!mousePressed && isPressed) {
-           isPressed = false;
-       }
-    } else { // Reset colour
+        // Call callback
+        if (mousePressed && !isPressed) {
+            if (callback) callback();
+            isPressed = true;
+        }
+        else if (!mousePressed) {
+            // Reset press
+            isPressed = false;
+        }
+
+    } else {
+        // Reset colour
         buttonRect.setFillColor(defaultColour);
+
+        // Reset press state if mouse leaves
+        if (!mousePressed) isPressed = false;
     }
 }
 

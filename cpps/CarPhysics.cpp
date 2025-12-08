@@ -7,6 +7,7 @@
 #include "../header/LoadSprites.h"
 #include "../header/CarPhysics.h"
 #include <cmath>
+#include <iostream>
 
 CarPhysics::CarPhysics(PhysicsWorld& physics, const CarSpec &spec, const b2Vec2 &startPosMeters) : m_physics(physics), m_car(spec) {
 
@@ -76,8 +77,6 @@ void CarPhysics::update(const MovementIntent &intent, float dt) {
     } else if (throttle < 0.f) {
         if (forwardSpeed > 1.f) {
             brake = -throttle;
-        } else {
-            reverse = -throttle;
         }
     }
 

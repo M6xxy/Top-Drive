@@ -11,7 +11,7 @@ enum class GameState {
     MAIN_MENU,
     GAME,
     SETTINGS,
-    BINDING
+    POSTGAME
 };
 
 

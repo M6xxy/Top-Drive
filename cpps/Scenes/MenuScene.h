@@ -8,30 +8,31 @@
 
 #include "../UI/Menu.h"
 #include "SFML/Graphics/RenderWindow.hpp"
+#include "../Global/Global.h"
 
 
 class MenuScene {
 public:
     int state = 1;
     int stateSettings = 0;
-    MenuScene(sf::RenderWindow& window) {
+
+    MenuScene(sf::RenderWindow& window, Global &gv) {
         //Load Font
         if (!font.loadFromFile("../../assets/ARIAL.TTF")) {
             std::cerr << "ERROR: FAILED TO LOAD FONT";
-
         }
         //Init Buttons
         //Play Button
-        Button playButton("Play",sf::Vector2f(250,75),sf::Vector2f(300,175),font);
+        Button playButton("Play", sf::Vector2f(250, 75), sf::Vector2f(gv.resX / 2 - 125, 275), font);
         playButton.setCallback([this]() { state = 2; });
 
         //Button Settings
         //Settings Button
-        Button settingsButton("Settings",sf::Vector2f(250,75),sf::Vector2f(300,275),font);
+        Button settingsButton("Settings", sf::Vector2f(250, 75), sf::Vector2f(gv.resX / 2 - 125, 375), font);
         settingsButton.setCallback([this]() { stateSettings = 1; });
 
         //Quit Button
-        Button quitButton("Quit",sf::Vector2f(250,75),sf::Vector2f(300,375),font);
+        Button quitButton("Quit", sf::Vector2f(250, 75), sf::Vector2f(gv.resX / 2 - 125, 475), font);
         quitButton.setCallback([this]() {
             std::cout << "Quit button clicked, exiting...\n";
             exit(0);
@@ -41,8 +42,8 @@ public:
         menu.addButton(playButton);
         menu.addButton(settingsButton);
         menu.addButton(quitButton);
-
     }
+
     void draw(sf::RenderWindow &window);
 
     void update(const sf::Vector2f &mousePos, bool mousePressed);

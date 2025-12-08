@@ -14,7 +14,7 @@ void PhysicsWorld::step(float dt) {
 
 void PhysicsWorld::applyMovementIntent(b2Body* body, const MovementIntent& intent, float maxSpeedMetersPerSec) {
 
-    if (!body) return;
+    if (!body) return; // If the car doesen't exist dont continue
 
     //  Standard Car Parameters
     const float acceleration = maxSpeedMetersPerSec * 2.0f; // m/s"
@@ -30,36 +30,32 @@ void PhysicsWorld::applyMovementIntent(b2Body* body, const MovementIntent& inten
 
     // Simulate Tyre Friction
     b2Vec2 right(forward.y, -forward.x);
-    float lateralSpeed = b2Dot(vel,right);
+    float lateralSpeed = b2Dot(vel,right); // Get the cars current lateral speed
     b2Vec2 lateralVel = lateralSpeed * right;
 
     // Throttle / Brake
 
-    float throttle = intent.throttle;
-    if (std::fabs(throttle) > 0.01f) {
+    float throttle = intent.throttle; // Is the player on the gas?
+    if (std::fabs(throttle) > 0.01f) { // If the user is on the gas add acceleration
         // Add acceleration
-        float scaler = throttle * acceleration * body->GetMass();
+        float scaler = throttle * acceleration * body->GetMass(); // Depending on how much throttle is being used times it by acceleration of the car and the mass of the car
         b2Vec2 force = scaler * forward;
-        body->ApplyForceToCenter(force, true);
+        body->ApplyForceToCenter(force, true); // Apply the accelration to the car
     }
 
     // Cap Speed
-    vel = body->GetLinearVelocity();
-    float speed = vel.Length();
-    if (speed > maxSpeedMetersPerSec) {
-        vel *= maxSpeedMetersPerSec / speed;
-        body->SetLinearVelocity(vel);
+    vel = body->GetLinearVelocity(); // Get the cars current velocity
+    float speed = vel.Length(); // get the speed from velocity
+    if (speed > maxSpeedMetersPerSec) { // If the speed if faster than the allowed max speed
+        vel *= maxSpeedMetersPerSec / speed; // Slow the velocity down
+        body->SetLinearVelocity(vel); // Apply the modified forces to the car
     }
 
     // Steering
 
-    float steer = intent.steer;
-    float desiredAngularVel = steer * turnSpeed;
-    body->SetAngularVelocity(desiredAngularVel);
-
-    if (intent.handbrake) {
-
-    }
+    float steer = intent.steer; // Is the player steering?
+    float desiredAngularVel = steer * turnSpeed; // Steering speed = if the users turning take into account the set turn speed
+    body->SetAngularVelocity(desiredAngularVel); // Apply the desired angular velocity to the car
 
 }
 

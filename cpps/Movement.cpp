@@ -15,6 +15,24 @@
 MovementIntent Movement::captureInput() const {
     MovementIntent intent;
 
+    // If controller connected use that instead
+    if (controllerConntected() == true) {
+        float steering = sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X); // Left thumpstick controls x axis
+        // Normalize the steering to -1 to 1
+        intent.steer = steering / 100.f;
+
+        // Accelerate (Im using a xbox controller so this is mapped to Z)
+        float throttle = sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::Z);
+        if (throttle > 5) // Normal deadzone from cheap controllers etc
+            intent.throttle = throttle / 100.f;
+
+        float brake = sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::R);
+        if (brake > 5) // Normal deadzone from cheap controllers etc
+            intent.throttle = -(brake / 100.f);
+
+        return intent;
+    };
+
     // Steering
     if (sf::Keyboard::isKeyPressed(p1Left))
         intent.steer -= 1.0f;

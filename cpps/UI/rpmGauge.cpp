@@ -18,7 +18,7 @@ rpmGauge::rpmGauge() {
 
     m_rpmText.setFont(m_font);
     m_rpmText.setCharacterSize(24);
-    m_rpmText.setFillColor(sf::Color::Black);
+    m_rpmText.setFillColor(sf::Color::White);
     m_rpmText.setString("RPM: 0");
 
     //Background
@@ -41,7 +41,6 @@ void rpmGauge::update(const Car &car) {
     float rpm = state.rpm;
     float maxRpm = spec.engine.rpmLimit;
 
-    std::cout << "RPM: " << state.rpm << "\n";
 
     float rpmFraction = (maxRpm > 0.f ? rpm / maxRpm : 0.f);
     if (rpmFraction < 0.f) rpmFraction = 0.f;
