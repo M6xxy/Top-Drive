@@ -1,0 +1,32 @@
+name: Build (Develop-Preview)
+
+on:
+  push:
+    branches:
+      - Develop-Preview
+  pull_request:
+    branches:
+      - Develop-Preview
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies for SFML + CMake
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            cmake ninja-build g++ \
+            libx11-dev libxrandr-dev libudev-dev \
+            libfreetype6-dev libgl1-mesa-dev \
+            libopenal-dev libvorbis-dev libflac-dev
+
+      - name: Configure CMake
+        run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build the project
+        run: cmake --build build
