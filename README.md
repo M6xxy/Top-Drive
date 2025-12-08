@@ -5,3 +5,5 @@ To run open the location of the installed game and navigate to the bin folder an
 
 
 To build from git please run the cmakefile
+
+[![Build (Develop-Preview)](https://github.com/M6xxy/Top-Drive/actions/workflows/build.yml/badge.svg?branch=Develop-Preview)](https://github.com/M6xxy/Top-Drive/actions/workflows/build.yml)
