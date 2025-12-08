@@ -26,6 +26,10 @@ public:
 
     void loadKeyMap(const std::string& filename);
 
+    bool controllerConntected() const {
+        return sf::Joystick::isConnected(0); // Check if controller is connected to #0, It should always be one since there is only 1 player
+    }
+
     // Reads keyboard inputs and returns user input
     MovementIntent captureInput() const;
 
