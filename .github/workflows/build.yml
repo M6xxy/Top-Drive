@@ -28,8 +28,13 @@ jobs:
             libgl1-mesa-dev \
             libudev-dev
 
-      - name: Configure CMake (Release)
-        run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+      - name: Configure (Release)
+        run: |
+          cmake -S . -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBOX2D_BUILD_UNIT_TESTS=OFF \
+            -DBOX2D_BUILD_TESTBED=OFF
+
 
       - name: Build
         run: cmake --build build --config Release
