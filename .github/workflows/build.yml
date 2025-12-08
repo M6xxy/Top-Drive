@@ -28,7 +28,7 @@ jobs:
             libgl1-mesa-dev \
             libudev-dev
 
-      - name: Configure (Release)
+      - name: Configure (Release) Build
         run: |
           cmake -S . -B build -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
